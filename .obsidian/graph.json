@@ -1,0 +1,58 @@
+{
+  "collapse-filter": false,
+  "search": "",
+  "showTags": false,
+  "showAttachments": false,
+  "hideUnresolved": false,
+  "showOrphans": true,
+  "collapse-color-groups": false,
+  "colorGroups": [
+    {
+      "query": "path:wiki/concepts  ",
+      "color": {
+        "a": 1,
+        "rgb": 16010846
+      }
+    },
+    {
+      "query": "path:raw/literature  ",
+      "color": {
+        "a": 1,
+        "rgb": 3913201
+      }
+    },
+    {
+      "query": "path:wiki/literature  ",
+      "color": {
+        "a": 1,
+        "rgb": 2382847
+      }
+    },
+    {
+      "query": "path:work  ",
+      "color": {
+        "a": 1,
+        "rgb": 3301938
+      }
+    },
+    {
+      "query": "path:",
+      "color": {
+        "a": 1,
+        "rgb": 5431473
+      }
+    }
+  ],
+  "collapse-display": false,
+  "showArrow": false,
+  "textFadeMultiplier": -3,
+  "nodeSizeMultiplier": 1.23099826388889,
+  "lineSizeMultiplier": 1.02874565972222,
+  "collapse-forces": false,
+  "centerStrength": 0.761762152777778,
+  "repelStrength": 13.7473958333333,
+  "linkStrength": 1,
+  "linkDistance": 61,
+  "scale": 0.9841367866967127,
+  "close": true
+}
