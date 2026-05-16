@@ -1,10 +1,10 @@
 ---
 type: concept
 sources: [sequoia2026karpathy, kalai2024hallucinate, aizawa2025tools, matarazzo2025survey, lin2022truthfulqa]
-related_concepts: [calibration-thread, tools-component, framework-four-components, agent-infrastructure-vs-capability]
+related_concepts: [calibration-thread, tools-component, framework-four-components, agent-infrastructure-vs-capability, skills-component]
 related_work: [experiment-math, experiment-riksantikvaren, experiment-chess]
 status: draft
-updated: 2026-05-13
+updated: 2026-05-16
 ---
 
 # Deterministic-Tools Hypothesis
@@ -48,6 +48,14 @@ The hypothesis is testable at three points across the experiments:
 - [[experiment-chess]] — inference and learned skills vs. chess-engine API as an upper-bound deterministic strong-play tool.
 
 If the hypothesis holds, the gap between inference and the deterministic configuration should be the largest one observed in each experiment, and calibration should improve monotonically with how cleanly the configuration externalises verification. If it fails in any of the three, the failure mode tells the thesis where the verifiable boundary itself is fuzzier than the hypothesis assumes — that is itself a contribution to the framework.
+
+## Keeping the engine-during-play boundary clean
+
+In [[experiment-chess]] the three configurations are designed so that the engine is *only* present in Config 3, and only at play time. Stockfish is still allowed as a *post-game* analysis tool for Configs 1 and 2 — feeding the agent's learning loop, contributing to the skill library — but not invocable during a move. This separation matters: if the engine were available during play in Configs 1 or 2 (even indirectly, e.g. a cached evaluation table), the deterministic-tool contribution would leak into the skill-library contribution, and the gap between Configs 2 and 3 (the hypothesis's most direct test) would collapse. The tool-fairness rulebook in [[experiment-chess]] formalises this constraint. See also [[skills-component]] for the related question of corpus boundaries on retrieval tools.
+
+## Comparison via shared opponents, not head-to-head
+
+The Phase 2 tournament structure in [[experiment-chess]] does not run Config-vs-Config matches; it runs each configuration as a gauntlet against a shared pool of calibrated opponents, computes an internal Elo per configuration against the shared pool, and ranks them. This preserves the gap measurements (1→2 and 2→3) that the hypothesis predicts, under matched conditions, and is methodologically necessary given the white-only training constraint. The cost is that direct head-to-head wins between configurations are not measured; the gain is that the comparison is controlled.
 
 ---
 *Framing drawn from `../../manuscript-notes/essay-pointer.md` (Essay/essay.tex §1, §3.2, §3.7, §6).*

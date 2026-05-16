@@ -151,3 +151,26 @@ Added Fielding and Matarazzo backlinks to 18 of 26 literature pages where the co
 - **Zero orphan files.** Every page receives at least one inbound link.
 - The two previously-orphan `interview-karpathy-analysis-{1,2}` pages now linked from `sequoia2026karpathy` (their source transcript) via `related_work` frontmatter + body connection.
 - Status of all 14 concept pages remains `status: draft` per user-ownership convention; promotion to `summarized` is a user decision.
+
+## [2026-05-16] capture | experiment-chess | Architecture, methodology, and tool-fairness rulebook settled
+Long discussion with Claude on the chess experiment's implementation surface. No code yet; this entry records what was settled and where it lives.
+
+### Diary
+- Created `diary/2026-05-16.md` — full record of the discussion: standards survey (FEN/PGN/SAN/UCI), library choice (python-chess), UI choice (chessground), backend architecture (FastAPI orchestrator + Player abstraction with Human/Engine/Agent implementations), logging schema (files-in-git: CSV + per-game PGN/JSON, queried with pandas), tool-fairness rulebook (mechanics tools always allowed; retrieval tools allowed iff corpus is agent-curated), white-only methodology across both phases with gauntlet-vs-shared-pool tournament structure, and the parallel chess LLM-wiki for the agent's knowledge.
+
+### Work
+- `work/experiment-chess.md` — substantial extension. Added: Methodology (white-only across both phases, time controls excluded), Implementation architecture (full stack table, Player abstraction, logging schema with rationale for `skill_repo_sha` and batch definition), Tool-fairness rulebook (formalised the mechanics-vs-knowledge distinction; Stockfish/Lichess post-game-only constraint), Knowledge structure section (parallel LLM wiki for chess), and Open items before build starts. Frontmatter `sources` extended with `karpathy2025wiki`; `updated` bumped.
+
+### Concepts (consolidated, not rewritten)
+- `wiki/concepts/skills-component.md` — added "The skill-corpus boundary as a methodological line" section grounding the corpus-curation rule developed in the chess experiment as a general principle for any skill-acquisition study. Added `deterministic-tools-hypothesis` to `related_concepts`.
+- `wiki/concepts/deterministic-tools-hypothesis.md` — added "Keeping the engine-during-play boundary clean" (why Stockfish must be post-game-only for Configs 1 and 2) and "Comparison via shared opponents, not head-to-head" (the methodological consequence of white-only training for Phase 2 tournament structure). Added `skills-component` to `related_concepts`.
+- `wiki/concepts/learning-as-temporal-dimension.md` — added "Batches as the operational unit of learning" (the skill-repo-SHA-per-batch design makes the learning loop observable and reversible) and "The agent's wiki as a second instance of the pattern" (chess wiki as second-domain test of karpathy2025wiki). 
+- `wiki/concepts/data-component.md` — added "A second LLM-wiki instance in a different domain" section (the chess wiki is both a second wiki-pattern test *and* the agent-curated corpus that the tool-fairness rulebook relies on; the architecture and the methodological constraint are aligned). Added `experiment-chess` to `related_work`.
+
+### Decisions
+Not yet promoted. The diary flags that the tool-fairness rulebook should be promoted to a proper decision record under `decisions/` before Phase 1 begins; user to confirm.
+
+### Lint
+- All new `[[wikilinks]]` resolve to existing files: `experiment-chess`, `diary/2026-05-16`, `skills-component`, `deterministic-tools-hypothesis`, `learning-as-temporal-dimension`, `data-component`, `karpathy2025wiki`, `risk-register`, `manuscript-notes/essay-pointer`.
+- No new orphan pages introduced.
+- Status of all touched concept pages remains `status: draft` per convention.

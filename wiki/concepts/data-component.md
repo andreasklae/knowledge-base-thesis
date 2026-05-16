@@ -2,9 +2,9 @@
 type: concept
 sources: [lewis2020rag, karpukhin2020dpr, anthropic2024mcp, karpathy2025wiki, rajasekaran2025, lin2022truthfulqa, matarazzo2025survey]
 related_concepts: [framework-four-components, mcp-vs-skills, context-engineering, calibration-thread, learning-as-temporal-dimension, workspace-component]
-related_work: [experiment-riksantikvaren]
+related_work: [experiment-riksantikvaren, experiment-chess]
 status: draft
-updated: 2026-05-13
+updated: 2026-05-16
 ---
 
 # Data Component
@@ -44,6 +44,10 @@ The choice between MCP (vendor-published, stable, broad consumer base) and skill
 ## Skill acquisition writes to data
 
 The data component is also where learned procedures land. Phase 1 of [[experiment-chess]] is a direct test of whether the data and skills components can be filled in automatically rather than requiring manual curation. See [[learning-as-temporal-dimension]].
+
+## A second LLM-wiki instance in a different domain
+
+[[experiment-chess]] structures the agent's accumulated chess knowledge as a parallel LLM wiki — openings, patterns, endgames, game-analyses — applying the [[karpathy2025wiki]] compiled-summary pattern in a second, narrower domain with the agent itself as maintainer. This is methodologically useful in two ways. First, it gives the thesis a second empirical data point for the wiki architecture: does the pattern transfer to a non-research domain when the maintainer is an agent rather than a human? Second, the wiki *is* the agent-curated corpus referenced by the chess experiment's tool-fairness rulebook (see [[skills-component]]) — retrieval over the wiki is permitted; retrieval over externally-built encyclopedias is not. The architecture choice and the methodological constraint are aligned.
 
 ---
 *Framing drawn from `../../manuscript-notes/essay-pointer.md` (Essay/essay.tex §2.2, §3.5).*

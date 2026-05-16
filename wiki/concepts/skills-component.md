@@ -1,10 +1,10 @@
 ---
 type: concept
 sources: [zhang2025, rajasekaran2025, ericsson1993deliberate, weber2024taxonomy, aizawa2025tools]
-related_concepts: [framework-four-components, tools-component, mcp-vs-skills, context-engineering, learning-as-temporal-dimension, calibration-thread]
+related_concepts: [framework-four-components, tools-component, mcp-vs-skills, context-engineering, learning-as-temporal-dimension, calibration-thread, deterministic-tools-hypothesis]
 related_work: [experiment-wcag-skill, experiment-chess, interview-erfan-analysis]
 status: draft
-updated: 2026-05-13
+updated: 2026-05-16
 ---
 
 # Skills Component
@@ -46,6 +46,12 @@ Skills verify by encoding procedures whose preconditions are checkable. A skill 
 
 - [[experiment-wcag-skill]] — WCAG audits with and without a dedicated skill, compared against human-conducted Tilsynet audits.
 - [[experiment-chess]] — both phases: phase 1 builds a skill library by trial and error; phase 2 freezes and evaluates it.
+
+## The skill-corpus boundary as a methodological line
+
+[[experiment-chess]]'s tool-fairness rulebook (see the experiment page) sharpens an otherwise-implicit distinction: a *tool* encodes mechanics (board geometry, legal-move generation); a *skill* encodes knowledge the agent has learned. The methodological line is that any chess knowledge the agent uses must enter the system through the learning loop — through skills written into the agent's library — and not be hardcoded into a tool by the experimenter. A retrieval tool with smart algorithms is fine; what makes it fair or unfair is whether the *corpus* it retrieves over was built by the agent's own skill-writing activity.
+
+This generalises beyond chess: the experimental cleanliness of any skill-acquisition study depends on the corpus boundary holding. Pre-loaded knowledge dressed up as a retrieval tool is the failure mode. See [[deterministic-tools-hypothesis]] for the related question of what counts as the deterministic side of the boundary.
 
 ---
 *Framing drawn from `../../manuscript-notes/essay-pointer.md` (Essay/essay.tex §2.6, §3.3, §3.5).*
