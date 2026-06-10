@@ -932,3 +932,8 @@ Gemma 4's internal thought channel (`<|channel>thought<channel|>`) does not reli
 ## [2026-06-10] capture | decisions/2026-06-10-structured-turn-memory.md | Structured turn memory ADR (supersedes 2026-05-26-agent-turn-memory)
 - New decision record: make_move gains an optional standing `plan` channel that persists across turns; reasoning note stays per-move; aggressive forgetting otherwise. Documents and fixes the latent bug where the HistoryProcessor injection dropped the system prompt from every turn after the first (verified against pydantic-ai 1.99 with a FunctionModel probe).
 - Authored by Claude (Fable 5) during the autonomous mating-patterns-and-strategy work session; see diary/experiment-chess/2026-06-10.md (pending) for the session record.
+
+## [2026-06-10] diary | experiment-chess + meta | Mating-patterns-and-strategy session; Fable 5 delegation reflection
+- Created `diary/experiment-chess/2026-06-10.md`: the full branch session — Capablanca ingestion (FEN-verified), nine wiki pages, mate & draw radar, structured turn memory + system-prompt bug fix, puzzle mode, three live test rounds on eX3 with results (mate-in-1 and K+Q conversion now solid; two-rook/K+R technique remains beyond the bare model).
+- Created `diary/meta/2026-06-10.md`: Andreas's test of Fable 5 on a large loosely-specified delegation — written by the model itself at his request, with that caveat stated in the entry.
+- Updated `wiki/concepts/gemma4-vllm-pydantic-ai-integration.md`: new pitfall section — history processors must re-inject the SystemPromptPart or all turns after the first run with no system prompt (the 2026-05-26→06-10 chess bug).
