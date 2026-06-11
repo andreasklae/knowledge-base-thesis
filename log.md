@@ -937,3 +937,6 @@ Gemma 4's internal thought channel (`<|channel>thought<channel|>`) does not reli
 - Created `diary/experiment-chess/2026-06-10.md`: the full branch session — Capablanca ingestion (FEN-verified), nine wiki pages, mate & draw radar, structured turn memory + system-prompt bug fix, puzzle mode, three live test rounds on eX3 with results (mate-in-1 and K+Q conversion now solid; two-rook/K+R technique remains beyond the bare model).
 - Created `diary/meta/2026-06-10.md`: Andreas's test of Fable 5 on a large loosely-specified delegation — written by the model itself at his request, with that caveat stated in the entry.
 - Updated `wiki/concepts/gemma4-vllm-pydantic-ai-integration.md`: new pitfall section — history processors must re-inject the SystemPromptPart or all turns after the first run with no system prompt (the 2026-05-26→06-10 chess bug).
+
+## [2026-06-11] capture | decisions/2026-06-11-pattern-triggers.md | Pattern-trigger fairness ADR
+- Settles wiki-driven mating-pattern hints: fire on geometry-present (must still fire when refuted), every hint traces to a wiki page (template_ frontmatter + one generic matcher), spam-capped. Same record covers the agent-composed threat primitive (imagine fen=/pass) and the tutor-side wiki validator.
