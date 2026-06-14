@@ -1,3 +1,12 @@
+---
+type: interview
+status: complete
+related_concepts: [agent-infrastructure-vs-capability, framework-four-components, calibration-thread, deterministic-tools-hypothesis, skills-component, data-component, context-engineering]
+related_work: [interview-karpathy-analysis-2, experiment-chess, experiment-math, experiment-vision-landmarks]
+sources: [sequoia2026karpathy, karpathy2025wiki]
+updated: 2026-05-16
+---
+
 # Analysis: Andrej Karpathy Interview (AIN 2026)
 
 ## Core Thesis of the Interview

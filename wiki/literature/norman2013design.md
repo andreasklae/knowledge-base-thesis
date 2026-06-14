@@ -7,10 +7,10 @@ year: 2013
 venue: Basic Books, New York
 raw_path: raw/literature/Norman(2013).pdf
 related_concepts: [framework-four-components, workspace-component, tools-component, calibration-thread, deterministic-tools-hypothesis, context-engineering]
-related_work: [experiment-incubation, experiment-calibration]
+related_work: [experiment-incubation]
 status: summarized
 ingested: 2026-05-14
-updated: 2026-05-14
+updated: 2026-05-15
 ---
 
 # Norman (2013) — The Design of Everyday Things (Revised and Expanded Edition)

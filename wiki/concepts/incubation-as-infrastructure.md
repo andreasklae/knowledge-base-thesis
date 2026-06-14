@@ -4,7 +4,7 @@ sources: [wallas1926art, sio2009incubation, sofroniew2026emotions, matarazzo2025
 related_concepts: [workspace-component, context-engineering, calibration-thread, framework-four-components]
 related_work: [experiment-incubation, interview-erfan-analysis]
 status: draft
-updated: 2026-05-13
+updated: 2026-05-15
 ---
 
 # Incubation as Agent Infrastructure

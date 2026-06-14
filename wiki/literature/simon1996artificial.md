@@ -10,7 +10,7 @@ related_concepts: [framework-four-components, agent-infrastructure-vs-capability
 related_work: []
 status: summarized
 ingested: 2026-05-14
-updated: 2026-05-14
+updated: 2026-05-15
 ---
 
 # Simon (1996) — The Sciences of the Artificial (3rd edition)

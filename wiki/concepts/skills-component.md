@@ -1,10 +1,10 @@
 ---
 type: concept
 sources: [zhang2025, rajasekaran2025, ericsson1993deliberate, weber2024taxonomy, aizawa2025tools]
-related_concepts: [framework-four-components, tools-component, mcp-vs-skills, context-engineering, learning-as-temporal-dimension, calibration-thread, deterministic-tools-hypothesis]
+related_concepts: [framework-four-components, tools-component, mcp-vs-skills, context-engineering, learning-as-temporal-dimension, calibration-thread, deterministic-tools-hypothesis, tool-fairness, skill-acquisition-loop]
 related_work: [experiment-wcag-skill, experiment-chess, interview-erfan-analysis]
 status: draft
-updated: 2026-05-16
+updated: 2026-06-01
 ---
 
 # Skills Component
@@ -46,6 +46,16 @@ Skills verify by encoding procedures whose preconditions are checkable. A skill 
 
 - [[experiment-wcag-skill]] — WCAG audits with and without a dedicated skill, compared against human-conducted Tilsynet audits.
 - [[experiment-chess]] — both phases: phase 1 builds a skill library by trial and error; phase 2 freezes and evaluates it.
+
+## Typed-tool contract: progressive disclosure + native schemas
+
+The canonical skill interaction uses `run_script(skill, filename, args: list[str])` — the model assembles an untyped argument list and calls a generic dispatcher. A stronger contract exposes each non-private script as its own named tool with a JSON Schema extracted from the script's argument declarations (argparse, typed entrypoint, or graceful fallback to generic `args[]`). This is the *typed-tool contract* described in [[2026-06-01-typed-tool-harness-spec]].
+
+The two properties that seem to be in tension — progressive disclosure (tools enter the model's context only when the skill loads) and typed schemas (all tool definitions must be known to the runner at build time) — are resolved by pydantic-ai's `prepare` hook. All script-tools are registered at build time, but each has a `prepare` closure that returns `None` (hiding the tool) unless the skill is in `activated_skills`. Per-request, pydantic-ai calls `prepare_tool_def` per step; the tool appears only when the skill is active. No runner rebuild.
+
+The `activated_skills` lifecycle must match: the list persists across `run()` calls (so skills loaded in turn N are visible in turn N+1) and resets only on `clear_conversation()`. This is a behavioural change from the current implementation, where `activated_skills` clears between every `run()`.
+
+Concrete benefits over the generic dispatcher: the model uses native tool-calling format (what it is fine-tuned for), and malformed arguments are rejected before subprocess spawn via `args_validator` — not discovered as a Python traceback inside the subprocess.
 
 ## The skill-corpus boundary as a methodological line
 

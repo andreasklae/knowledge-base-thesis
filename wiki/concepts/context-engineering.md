@@ -4,7 +4,7 @@ sources: [rajasekaran2025, zhang2025, martin2026managed, sequoia2026karpathy, ai
 related_concepts: [data-component, skills-component, framework-four-components, incubation-as-infrastructure, workspace-component, tools-component]
 related_work: [experiment-incubation, experiment-riksantikvaren]
 status: draft
-updated: 2026-05-13
+updated: 2026-05-15
 ---
 
 # Context Engineering

@@ -4,7 +4,7 @@ sources: [simon1996artificial, hutchins1995wild, norman2013design, martin2026man
 related_concepts: [workspace-component, tools-component, skills-component, data-component, calibration-thread, deterministic-tools-hypothesis, distributed-cognition, learning-as-temporal-dimension, agent-infrastructure-vs-capability]
 related_work: [experiment-riksantikvaren, experiment-wcag-skill, experiment-math, experiment-vision-landmarks, experiment-chess, experiment-incubation]
 status: draft
-updated: 2026-05-13
+updated: 2026-05-15
 ---
 
 # The Four-Component Framework

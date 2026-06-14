@@ -1,3 +1,12 @@
+---
+type: interview
+status: complete
+related_concepts: [agent-infrastructure-vs-capability, framework-four-components, calibration-thread, deterministic-tools-hypothesis, skills-component, data-component, context-engineering, tools-component]
+related_work: [interview-karpathy-analysis-1, experiment-chess, experiment-math, experiment-vision-landmarks, experiment-riksantikvaren]
+sources: [sequoia2026karpathy, karpathy2025wiki]
+updated: 2026-05-16
+---
+
 # Analysis of Andrej Karpathy Interview
 
 This interview is useful because it is not mainly about models getting smarter in the abstract. Karpathy's central point is that language models are becoming a new computing substrate, and the important design question is how humans, tools, data, verification, and agent-facing infrastructure should be reorganized around that substrate.

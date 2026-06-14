@@ -4,7 +4,7 @@ sources: [simon1996artificial, hutchins1995wild, norman2013design, karpathy2025w
 related_concepts: [framework-four-components, workspace-component, agent-infrastructure-vs-capability, data-component]
 related_work: []
 status: draft
-updated: 2026-05-13
+updated: 2026-05-15
 ---
 
 # Distributed Cognition

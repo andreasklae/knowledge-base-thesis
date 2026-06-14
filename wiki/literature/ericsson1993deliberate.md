@@ -10,7 +10,7 @@ related_concepts: [skills-component, learning-as-temporal-dimension, distributed
 related_work: [experiment-chess, experiment-wcag-skill]
 status: summarized
 ingested: 2026-05-14
-updated: 2026-05-14
+updated: 2026-05-15
 ---
 
 # Ericsson, Krampe & Tesch-Römer (1993) — Deliberate Practice

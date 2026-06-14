@@ -5,8 +5,8 @@ title: Case Study Research and Applications — Design and Methods (6th ed.)
 authors: [Yin, Robert K.]
 year: 2018
 venue: SAGE Publications (book, 6th edition)
-raw_path: raw/literature/Yin(2028).pdf
-related_concepts: [methodology, case-study-method, agent-infrastructure-vs-capability]
+raw_path: raw/literature/Yin(2018).pdf
+related_concepts: [agent-infrastructure-vs-capability]
 related_work: []
 status: summarized
 ingested: 2026-05-15

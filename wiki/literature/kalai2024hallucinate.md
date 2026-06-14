@@ -10,7 +10,7 @@ related_concepts: [calibration-thread, deterministic-tools-hypothesis, data-comp
 related_work: []
 status: summarized
 ingested: 2026-05-14
-updated: 2026-05-14
+updated: 2026-05-15
 ---
 
 # Kalai & Vempala (2024) — Calibrated Language Models Must Hallucinate

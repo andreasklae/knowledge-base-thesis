@@ -1,3 +1,12 @@
+---
+type: interview
+status: complete
+related_concepts: [skills-component, incubation-as-infrastructure, context-engineering, framework-four-components]
+related_work: [experiment-incubation, experiment-wcag-skill]
+sources: []
+updated: 2026-05-16
+---
+
 # Interview Analysis — Erfan
 
 ## Metadata

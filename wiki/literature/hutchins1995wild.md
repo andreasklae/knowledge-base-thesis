@@ -7,10 +7,10 @@ year: 1995
 venue: MIT Press, Cambridge MA
 raw_path: raw/literature/Hutchins(1995).pdf
 related_concepts: [distributed-cognition, framework-four-components, workspace-component, tools-component, context-engineering]
-related_work: [experiment-incubation, experiment-calibration]
+related_work: [experiment-incubation]
 status: summarized
 ingested: 2026-05-14
-updated: 2026-05-14
+updated: 2026-05-15
 ---
 
 # Hutchins (1995) — Cognition in the Wild

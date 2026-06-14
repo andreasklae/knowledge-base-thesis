@@ -1,10 +1,10 @@
 ---
 type: concept
-sources: [aizawa2025tools, anthropic2024mcp, martin2026managed, fielding2000, weber2024taxonomy, rajasekaran2025]
+sources: [aizawa2025tools, anthropic2024mcp, martin2026managed, fielding2000, weber2024taxonomy, rajasekaran2025, mirko2026gemma, mayo2026gemma4tools]
 related_concepts: [framework-four-components, deterministic-tools-hypothesis, calibration-thread, mcp-vs-skills, skills-component, context-engineering]
 related_work: [experiment-riksantikvaren, experiment-math, experiment-vision-landmarks]
 status: draft
-updated: 2026-05-13
+updated: 2026-05-27
 ---
 
 # Tools Component
@@ -34,6 +34,16 @@ Tools verify by execution. The output of a tool call is external state the agent
 - [[experiment-riksantikvaren]] — the Askeladden API as a tool for grounding heritage answers.
 - [[experiment-math]] — a coding sandbox as a tool for turning reasoning into executable verification.
 - [[experiment-vision-landmarks]] — GPS reverse-geocoding and landmark-lookup tools to constrain the candidate set against prototypicality bias; see [[prototypicality-bias]].
+- [[experiment-chess]] — four perception/action scripts (`show_position`, `list_legal_moves`, `imagine_move`, `make_move`) called via `run_script` with a typed `args: list[str]` contract. Surfaces two distinct contract-design patterns:
+
+  - **Contract-at-the-transport-layer** ([[2026-05-27-run-script-args-list]]): the harness's original `shlex.split(args_string)` mangled free-text reasoning containing apostrophes; the typed `list[str]` schema eliminates the shell-parse step entirely. Pydantic-ai's schema becomes the contract — calls that don't match the shape are rejected before any code runs.
+  - **Contract-at-the-mutation-boundary** ([[2026-05-27-single-writer-move-contract]]): when `make_move` *also pushed* to the live board via its HTTP side-channel, there were two writers to `game.board` (the bot loop and the agent endpoint). Race surfaces, double-push bugs, and "phantom move on the board" symptoms followed. The fix: the endpoint becomes a pure validator; only the bot loop pushes. The tool returns a result; the *caller* of `get_move()` decides what to do with it. Players are uniform — they emit moves, the loop owns the board.
+
+  Both patterns generalise: as the contract between agent and tool gets tighter (schema, single writer, no side-channels) the class of failures available to the system collapses.
+
+## Constrained decoding as a contract-tightening mechanism
+
+A repeating pattern in small-model tool calling: the model emits argument JSON that almost matches the schema, but small errors (missing required fields, malformed quoting) break the parse. Two independent grey-lit sources document the same fix: switch from free-form tool-call generation to schema-constrained decoding. [[mirko2026gemma]] reports that Pydantic AI's default `ToolOutput` is unreliable with Gemma 4 via Ollama; `NativeOutput` (which maps to Ollama's `format=` with a JSON schema, engaging server-side constrained decoding) plus temperature 0.2 makes it reliable. vLLM's analogue is `guided_json`. [[mayo2026gemma4tools]] confirms via a from-scratch loop that small Gemma variants need *specific* retry-hint error strings to recover from malformed output; constrained decoding eliminates the need to recover. The corresponding chess-experiment observation — vLLM 400 BadRequest on malformed Gemma tool-call JSON — is the same failure mode in a different stack.
 
 ---
 *Framing drawn from `../../manuscript-notes/essay-pointer.md` (Essay/essay.tex §2.6, §3.2).*

@@ -4,7 +4,7 @@ sources: [lin2022truthfulqa, kalai2024hallucinate, sofroniew2026emotions]
 related_concepts: [tools-component, calibration-thread, framework-four-components, data-component]
 related_work: [experiment-vision-landmarks]
 status: draft
-updated: 2026-05-13
+updated: 2026-05-15
 ---
 
 # Prototypicality Bias in Vision-Language Models

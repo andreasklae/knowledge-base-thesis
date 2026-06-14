@@ -10,7 +10,7 @@ related_concepts: [calibration-thread, learning-as-temporal-dimension, prototypi
 related_work: []
 status: summarized
 ingested: 2026-05-14
-updated: 2026-05-14
+updated: 2026-05-16
 ---
 
 # Guo et al. (2017) — On Calibration of Modern Neural Networks
@@ -65,7 +65,7 @@ Temperature scaling, single line of code, 10 iterations of conjugate gradient, f
 
 ## Relevance to this thesis
 
-### 1. Empirical foundation for [[calibration-thread.md]]
+### 1. Empirical foundation for [[calibration-thread]]
 
 The thesis claims that calibration is a load-bearing property of model output that interacts with both hallucination (via [[kalai2024hallucinate]]) and with the trust/handoff between agent and user. Guo et al. is the canonical demonstration that **calibration is a property of the training regime, not just the architecture or the data**: large modern networks are reliably overconfident, and the fix (temperature scaling) is post-hoc, cheap, and accuracy-preserving. The thesis can cite Guo as the empirical anchor and Kalai as the theoretical anchor.
 

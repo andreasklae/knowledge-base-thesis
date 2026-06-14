@@ -4,7 +4,7 @@ status: planning
 related_concepts: [tools-component, data-component, deterministic-tools-hypothesis, calibration-thread, framework-four-components]
 related_work: [experiment-math, experiment-chess]
 sources: [anthropic2024mcp, lewis2020rag, karpukhin2020dpr, karpathy2025wiki, kalai2024hallucinate]
-updated: 2026-05-13
+updated: 2026-05-16
 ---
 
 # Experiment: Riksantikvaren Four-Configuration Study
@@ -57,7 +57,7 @@ A single fixed set of factual questions about Norwegian heritage sites. The same
 ## Dependencies
 
 - Pilot work on the heritage-agent prototype (already done).
-- Frozen Askeladden snapshot to guard against post-snapshot API changes (see [[../manuscript-notes/risk-register.md]]).
+- Frozen Askeladden snapshot to guard against post-snapshot API changes (see [[risk-register]]).
 
 ## Cross-references
 

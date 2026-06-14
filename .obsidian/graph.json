@@ -5,7 +5,7 @@
   "showAttachments": false,
   "hideUnresolved": false,
   "showOrphans": true,
-  "collapse-color-groups": false,
+  "collapse-color-groups": true,
   "colorGroups": [
     {
       "query": "path:wiki/concepts  ",
@@ -46,13 +46,13 @@
   "collapse-display": false,
   "showArrow": false,
   "textFadeMultiplier": -3,
-  "nodeSizeMultiplier": 1.23099826388889,
-  "lineSizeMultiplier": 1.02874565972222,
+  "nodeSizeMultiplier": 1.08170138888889,
+  "lineSizeMultiplier": 1.26630208333333,
   "collapse-forces": false,
-  "centerStrength": 0.761762152777778,
-  "repelStrength": 13.7473958333333,
-  "linkStrength": 1,
+  "centerStrength": 0.475824652777778,
+  "repelStrength": 15.6953125,
+  "linkStrength": 0.860807291666667,
   "linkDistance": 61,
-  "scale": 1.060080542893853,
+  "scale": 0.40881272415440567,
   "close": true
 }

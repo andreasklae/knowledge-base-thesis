@@ -4,7 +4,7 @@ status: planning
 related_concepts: [prototypicality-bias, tools-component, calibration-thread, framework-four-components]
 related_work: []
 sources: []
-updated: 2026-05-13
+updated: 2026-05-16
 ---
 
 # Experiment: Vision Landmarks Threefold
@@ -23,7 +23,7 @@ The 211-image global landmark benchmark assembled during pilot work. Covers site
 - the correct answer, including cases where the correct answer is a confident "cannot determine";
 - the prototypicality trap, where applicable (which famous instance the bias would default to).
 
-By construction the benchmark is implicitly a calibration benchmark rather than just an accuracy benchmark — see [[../wiki/concepts/prototypicality-bias.md]] and [[../wiki/concepts/calibration-thread.md]]. Few public landmark datasets are designed this way; flagged as future-work contribution in [[../manuscript-notes/open-questions-future-work.md]].
+By construction the benchmark is implicitly a calibration benchmark rather than just an accuracy benchmark — see [[prototypicality-bias]] and [[calibration-thread]]. Few public landmark datasets are designed this way; flagged as future-work contribution in [[open-questions-future-work]].
 
 ## Configurations
 

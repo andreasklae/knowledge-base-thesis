@@ -10,7 +10,7 @@ related_concepts: [incubation-as-infrastructure, distributed-cognition, framewor
 related_work: [experiment-incubation]
 status: summarized
 ingested: 2026-05-13
-updated: 2026-05-13
+updated: 2026-05-15
 ---
 
 # Wallas (1926) — The Art of Thought

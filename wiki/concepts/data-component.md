@@ -4,7 +4,7 @@ sources: [lewis2020rag, karpukhin2020dpr, anthropic2024mcp, karpathy2025wiki, ra
 related_concepts: [framework-four-components, mcp-vs-skills, context-engineering, calibration-thread, learning-as-temporal-dimension, workspace-component]
 related_work: [experiment-riksantikvaren, experiment-chess]
 status: draft
-updated: 2026-05-16
+updated: 2026-05-19
 ---
 
 # Data Component
@@ -44,6 +44,20 @@ The choice between MCP (vendor-published, stable, broad consumer base) and skill
 ## Skill acquisition writes to data
 
 The data component is also where learned procedures land. Phase 1 of [[experiment-chess]] is a direct test of whether the data and skills components can be filled in automatically rather than requiring manual curation. See [[learning-as-temporal-dimension]].
+
+## The dual audience: compiled summaries serve the human, not only the agent
+
+A point developed in [[sequoia2026karpathy]] and articulated more fully in [[interview-karpathy-analysis-2]]: compiled-summary infrastructure is not only context for the agent — it is also a *projection* of the underlying corpus that helps the human maintain enough understanding to direct the work. Karpathy's framing in the interview: *"information making it into my brain"* is the bottleneck, not the agent's output rate. A wiki re-organises raw sources into a structure that supports human comprehension while simultaneously providing the agent with persistent context across sessions. The same artefact serves both audiences.
+
+This generalises the data component's role. RAG and direct-tool retrieval target the model's context; the compiled-summary architecture additionally targets the *human's* context. A literature page in `wiki/literature/` is read by the agent on the next ingest; it is also read by the user when revisiting a topic months later. The compiled synthesis is what survives the user's own forgetting curve. Where the agent compounds across sessions by accumulating wiki content, the user compounds across sessions by reading what the agent wrote — and asking the next question from a stronger position than they would otherwise have. *"You can outsource your thinking but you can't outsource your understanding"* names what this infrastructure preserves: the human stays load-bearing as director, and the wiki is what keeps that role tractable.
+
+## The thesis's own knowledge base as a working instance
+
+The knowledge base that hosts this concept page is itself an instance of the compiled-summary architecture (see [[diary/meta/2026-05-14]] for the design discussion). It departs from [[karpathy2025wiki]] on one structural point: where Karpathy collapses everything to *raw* vs *wiki*, an academic project also has substantial *user-authored* content (diary, decisions, experiment notes, scope choices) that is neither external evidence nor LLM-owned synthesis. The thesis KB therefore runs three ownership zones — `raw/` (external, immutable), user-authored folders (`diary/`, `work/`, `decisions/`, `admin/`, `archive/`, `manuscript-notes/`, `inbox/`), and `wiki/` (LLM-owned). Top-level folder structure encodes *ownership*, not content type. The wiki is one zone of three, not a container for everything.
+
+A practical consequence visible in the directory structure: `wiki/literature/` exists (external sources need an LLM summary tailored to the project) but there is no `wiki/work/` (the user's experiment notes are already project-tailored authoring; an LLM "synthesis page" of those would just be a rewrite). Synthesis across experiments happens here in `wiki/concepts/` instead.
+
+This is the *primary* working instance of the wiki pattern. The chess wiki below is a *second, narrower* instance with an agent rather than a human as maintainer.
 
 ## A second LLM-wiki instance in a different domain
 

@@ -4,7 +4,7 @@ sources: [kalai2024hallucinate, guo2017calibration, kadavath2022know, sofroniew2
 related_concepts: [deterministic-tools-hypothesis, framework-four-components, workspace-component, tools-component, skills-component, data-component]
 related_work: [experiment-riksantikvaren, experiment-math, experiment-vision-landmarks, experiment-chess, experiment-incubation]
 status: draft
-updated: 2026-05-13
+updated: 2026-05-15
 ---
 
 # Calibration as a Systems Property

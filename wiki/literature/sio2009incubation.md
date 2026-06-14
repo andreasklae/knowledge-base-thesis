@@ -10,7 +10,7 @@ related_concepts: [incubation-as-infrastructure, distributed-cognition]
 related_work: [experiment-incubation]
 status: summarized
 ingested: 2026-05-14
-updated: 2026-05-14
+updated: 2026-05-15
 ---
 
 # Sio & Ormerod (2009) — Does Incubation Enhance Problem Solving?

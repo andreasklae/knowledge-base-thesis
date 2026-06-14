@@ -10,7 +10,7 @@ related_concepts: [agent-infrastructure-vs-capability, framework-four-components
 related_work: []
 status: summarized
 ingested: 2026-05-14
-updated: 2026-05-14
+updated: 2026-05-15
 ---
 
 # Peng et al. (2023) — The Impact of AI on Developer Productivity: Evidence from GitHub Copilot

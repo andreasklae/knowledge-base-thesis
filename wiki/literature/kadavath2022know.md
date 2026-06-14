@@ -10,7 +10,7 @@ related_concepts: [calibration-thread, agent-infrastructure-vs-capability, deter
 related_work: []
 status: summarized
 ingested: 2026-05-14
-updated: 2026-05-14
+updated: 2026-05-16
 ---
 
 # Kadavath et al. (2022) — Language Models (Mostly) Know What They Know
@@ -83,7 +83,7 @@ The finding that **P(IK) increases when relevant Wikipedia is in context, even t
 
 ### 4. RLHF temperature fix as a deployment pattern
 
-The single-temperature fix for RLHF miscalibration is concretely useful for the thesis: any post-training step that improves an agent's behaviour likely degrades calibration; a one-parameter temperature scan on a small validation set fixes it. This should go on [[calibration-thread.md]] as a deployment hygiene note.
+The single-temperature fix for RLHF miscalibration is concretely useful for the thesis: any post-training step that improves an agent's behaviour likely degrades calibration; a one-parameter temperature scan on a small validation set fixes it. This should go on [[calibration-thread]] as a deployment hygiene note.
 
 ### 5. Distinguishing self-knowledge from difficulty
 

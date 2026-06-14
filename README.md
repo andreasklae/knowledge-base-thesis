@@ -4,6 +4,8 @@ Personal knowledge base for a master's thesis on AI agent productivity as an inf
 
 It tracks literature, experiments, decisions, daily reflections, and evolving synthesis. The thesis manuscript and experiment source code live in separate repositories.
 
+> **New here? Read [OVERVIEW.md](OVERVIEW.md) first** — it states what the thesis argues, the four-component framework, the six experiments, and a cold-start reading order. This README covers KB *mechanics*; OVERVIEW covers the *project*.
+
 ## Structure
 
 | Path | Owner | Contents |
@@ -14,7 +16,7 @@ It tracks literature, experiments, decisions, daily reflections, and evolving sy
 | `wiki/literature/` | LLM | one summary page per source in `raw/literature/` |
 | `wiki/concepts/` | LLM | cross-cutting synthesis pages |
 | `work/` | user | experiments, modules, external repos |
-| `diary/` | user | `YYYY-MM-DD.md`, one file per working day |
+| `diary/` | user-directed, LLM-written | `diary/<work-slug>/YYYY-MM-DD.md`; the user decides when/what, the agent writes (see CLAUDE.md "Diary authorship") |
 | `admin/` | user | deadlines, supervisor notes, ideas, todos |
 | `decisions/` | user | ADR-style records |
 | `archive/` | user | abandoned experiments, scrapped drafts |
@@ -33,7 +35,7 @@ It tracks literature, experiments, decisions, daily reflections, and evolving sy
 
 When you want it processed, ask the agent to "process the inbox" (or anything equivalent). It will:
 
-1. Read each file and decide where it belongs (idea → `admin/ideas.md`; substantial concept → new `wiki/concepts/` draft; decision → `decisions/` after confirming with you; reflection → `diary/YYYY-MM-DD.md`).
+1. Read each file and decide where it belongs (idea → `admin/ideas.md`; substantial concept → new `wiki/concepts/` draft; decision → `decisions/` after confirming with you; reflection → `diary/<work-slug>/YYYY-MM-DD.md`, written on your request — the agent suggests, you direct).
 2. Ask you if a destination is ambiguous, leaving the file in `inbox/` until you clarify.
 3. Delete the source file once the destination writes succeed, and append a single entry to `log.md` per file.
 

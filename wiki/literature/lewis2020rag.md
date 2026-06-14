@@ -10,7 +10,7 @@ related_concepts: [data-component, tools-component, deterministic-tools-hypothes
 related_work: []
 status: summarized
 ingested: 2026-05-14
-updated: 2026-05-14
+updated: 2026-05-15
 ---
 
 # Lewis et al. (2020) — Retrieval-Augmented Generation for Knowledge-Intensive NLP Tasks

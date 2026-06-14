@@ -2,6 +2,8 @@
 
 This file tells you (the LLM agent) how this knowledge base is structured and how to operate on it. Read it at the start of every session before making any changes. If anything below is ambiguous in a specific situation, ask the user rather than guessing.
 
+**For *what the project is* — the thesis argument, the framework, the six experiments, and a cold-start reading order — read [OVERVIEW.md](OVERVIEW.md) first.** This file is about *how to operate on* the KB; OVERVIEW is about the project itself.
+
 ## Purpose
 
 This knowledge base supports a master's thesis on AI agent productivity as an infrastructure problem. It tracks literature, experiments, decisions, reflections, and evolving synthesis. It does not contain the experiments' source code or the thesis manuscript — those live in separate repositories.
@@ -12,9 +14,21 @@ Every file in this knowledge base plays one of three roles:
 
 1. **External source of truth** (in `raw/`) — papers, interview transcripts, datasets. You read these. You do not edit their content; typo fixes and version replacements are allowed, but never rewrite a source to change what it says.
 
-2. **User-authored content** (in `diary/`, `admin/`, `work/`, `decisions/`, `archive/`, `manuscript-notes/`, and `inbox/`) — owned by the user. You read these as input. You may propose edits, and you may make edits when the user asks, but the user owns them.
+2. **User-authored content** (in `admin/`, `work/`, `decisions/`, `archive/`, `manuscript-notes/`, and `inbox/`) — owned by the user. You read these as input. You may propose edits, and you may make edits when the user asks, but the user owns them.
 
 3. **LLM-compiled synthesis** (in `wiki/`) — owned by you. You create, update, and maintain these pages. The user reads them.
+
+4. **Supervised LLM-authored content** (in `diary/`) — a hybrid the user directs and you write. See "Diary authorship" below.
+
+### Diary authorship
+
+Diary entries are **written by you (the LLM), under the user's supervision.** The user decides *when* an entry is written and what its *gist* should be; you do the actual writing. The content is the user's record of the work — you are the instrument that produces it, not the author of record. Three rules:
+
+- **Never start a diary entry on your own accord.** An entry is written only when the user asks for one (or explicitly approves writing one). Do not write up the day's work unprompted just because work happened.
+- **You are encouraged to *suggest* writing one.** Asking "should I write a diary entry about X?" is welcome and proactive; *writing* it without that go-ahead is not.
+- **The user may also write entries directly.** When they have, treat their text as user-authored: preserve their voice, propose edits rather than rewriting.
+
+When you write an entry, write it in service of the gist the user gave you; don't editorialise beyond it. The user reviews and corrects.
 
 A wiki page may contain information that has no source in `raw/`. Many concept pages will draw primarily from the user's diary, experiment results, and conversations. This is correct.
 
@@ -25,10 +39,12 @@ A wiki page may contain information that has no source in `raw/`. Many concept p
 | `raw/literature/` | external | PDFs of papers, `references.bib` |
 | `raw/interviews/` | external | finalized interview transcripts |
 | `raw/datasets/` | external | external data files |
+| `raw/other/` | external | non-academic external sources: gists, blog posts, web articles, slide decks, talks |
+| `raw/discussions/` | user | extended dialogues with AI, longer reflections, and multi-topic explorations the user wants to save and mine for synthesis |
 | `wiki/literature/` | LLM | one summary page per source in `raw/literature/` |
 | `wiki/concepts/` | LLM | cross-cutting synthesis pages |
 | `work/` | user | experiments, modules, external repos (flat; `type:` in frontmatter) |
-| `diary/` | user | `YYYY-MM-DD.md`, one file per working day |
+| `diary/` | user-directed, LLM-written | one subfolder per work slug (e.g. `diary/experiment-chess/`) plus `diary/meta/` for cross-cutting entries; files named `YYYY-MM-DD.md`. The user decides when/what; you write. See "Diary authorship". |
 | `admin/` | user | deadlines, supervisor notes, `ideas.md`, todos |
 | `decisions/` | user | ADR-style records: `YYYY-MM-DD-short-slug.md` |
 | `archive/` | user | abandoned experiments, scrapped drafts |
@@ -65,7 +81,7 @@ updated: 2026-05-13
 ```yaml
 ---
 type: concept
-sources: [kalai2024calibration, guo2017calibration]    # citekeys from references.bib
+sources: [kalai2024calibration, guo2017calibration]    # citekeys from references.bib, OR grey-lit citekeys whose page lives in wiki/literature/ without a bib entry (e.g. mirko2026gemma)
 related_concepts: [deterministic-tools-hypothesis, framework-four-components]
 related_work: [experiment-math, experiment-riksantikvaren]
 status: stable             # one of: draft, stable, contested
@@ -86,7 +102,7 @@ updated: 2026-05-13
 ---
 ```
 
-### Diary entries (`diary/YYYY-MM-DD.md`)
+### Diary entries (`diary/<work-slug>/YYYY-MM-DD.md` or `diary/meta/YYYY-MM-DD.md`)
 
 ```yaml
 ---
@@ -121,21 +137,24 @@ You perform four kinds of operation: ingest, capture, query, lint. Each has a de
 
 ### Ingest
 
-The user adds a new source to `raw/` (literature, interview, dataset) and asks you to ingest it.
+The user adds a new source to `raw/` (literature, interview, dataset, or other) and asks you to ingest it.
 
-1. Read the source. For PDFs, read directly; you do not need a markdown equivalent in `raw/`.
-2. For a literature source: add the BibTeX entry to `raw/literature/references.bib`. If the user has not supplied it, generate one and ask them to confirm.
-3. Create the corresponding wiki page (e.g. `wiki/literature/<citekey>.md`). For literature, the page contains: a 2-4 sentence summary, the source's main claims, its relevance to this thesis, and links to related concepts and work.
-4. Update or create relevant concept pages in `wiki/concepts/`. A single source often touches several concept pages. Mark contested claims explicitly.
-5. Update `index.md`.
-6. Append an entry to `log.md`:
+1. Read the source. For PDFs, read directly; you do not need a markdown equivalent in `raw/`. Before creating any new wiki page, **check for duplicates**: search `wiki/literature/` for an existing citekey covering the same source, and search `raw/` for the same content under a different filename or folder. If a duplicate exists, do not re-ingest; report it and ask the user how to proceed.
+2. For a literature source (peer-reviewed paper or formal academic publication): add the BibTeX entry to `raw/literature/references.bib`. If the user has not supplied it, generate one and ask them to confirm.
+3. For an `raw/other/` source (gist, blog post, web article, talk transcript): no BibTeX. Create the wiki page directly under `wiki/literature/` using the same `<authorYYYY<slug>>` citekey convention — these are still citable in the thesis as grey literature, and keeping all summary pages under one folder preserves the index structure. The page's `venue:` frontmatter should record the actual venue (e.g. `GitHub Gist (idea file)`, `Personal blog`, `YouTube`).
+
+For a `raw/discussions/` source (a conversation transcript or extended reflection the user has dropped in): no BibTeX and no literature page. These are working material, not citable sources. Process them as a **capture** operation, not an ingest: identify the ideas, design proposals, and thesis-relevant insights, then route each to its proper destination — new or updated `wiki/concepts/` pages, entries in `admin/ideas.md`, or (if the user asks) a diary entry. Discussions do not get their own summary page in `wiki/literature/`; they feed into the concept layer. After processing, add an entry to `index.md` under the **Discussions** section listing the file and the destinations it produced.
+4. Create the corresponding wiki page (e.g. `wiki/literature/<citekey>.md`). The page contains: a 2-4 sentence summary, the source's main claims, its relevance to this thesis, and links to related concepts and work.
+5. Update or create relevant concept pages in `wiki/concepts/`. A single source often touches several concept pages. Mark contested claims explicitly.
+6. Update `index.md`.
+7. Append an entry to `log.md`:
    ```
-   ## [2026-05-13] ingest | kalai2024calibration | Calibrated Language Models Must Hallucinate
-   - Created wiki/literature/kalai2024calibration.md
-   - Updated wiki/concepts/calibration.md (added theoretical lower bound section)
+   ## [2026-05-13] ingest | kalai2024hallucinate | Calibrated Language Models Must Hallucinate
+   - Created wiki/literature/kalai2024hallucinate.md
+   - Updated wiki/concepts/calibration-thread.md (added theoretical lower bound section)
    - Updated wiki/concepts/hallucination.md (created)
    ```
-7. Report what changed to the user. Highlight any contradictions with existing wiki content.
+8. Report what changed to the user. Highlight any contradictions with existing wiki content.
 
 ### Capture
 
@@ -145,7 +164,7 @@ Captures can arrive two ways: the user says something in conversation ("remember
    - A half-formed observation or one-liner → append to `admin/ideas.md`.
    - A substantial idea that connects to existing concepts → new or updated page in `wiki/concepts/` with `status: draft`.
    - A scope/architecture decision the user has just made → new file in `decisions/`. Confirm with the user before creating, since decision records are intended to be durable.
-   - A reflection on the day's work or a request to log progress → new or appended `diary/YYYY-MM-DD.md`, then propagate to relevant concept and work pages.
+   - A reflection on the day's work or a request to log progress → new or appended `diary/<work-slug>/YYYY-MM-DD.md` (or `diary/meta/` for cross-cutting), then propagate to relevant concept and work pages. **Only when the user has asked for the entry** (the capture request itself counts); see "Diary authorship". If material looks diary-worthy but the user hasn't asked, suggest it rather than writing it.
 2. If unsure, ask. Do not guess silently.
 3. Append to `log.md`.
 
@@ -166,7 +185,7 @@ The user asks you to process `inbox/`, or asks something equivalent like "proces
 1. List the files in `inbox/`. If empty, tell the user and stop.
 2. For each file, in any order:
    a. Read its contents.
-   b. Decide the destination using the Capture rules above (one-liners and half-formed observations → `admin/ideas.md`; substantial ideas → new or updated `wiki/concepts/` page with `status: draft`; scope/architecture decisions → new file in `decisions/` (confirm with user first); reflections on the day's work → new or appended `diary/YYYY-MM-DD.md`).
+   b. Decide the destination using the Capture rules above (one-liners and half-formed observations → `admin/ideas.md`; substantial ideas → new or updated `wiki/concepts/` page with `status: draft`; scope/architecture decisions → new file in `decisions/` (confirm with user first); reflections on the day's work → new or appended `diary/<work-slug>/YYYY-MM-DD.md`, written only on the user's request per "Diary authorship").
    c. If the destination is ambiguous, leave the file in `inbox/` and ask the user. Do not guess.
    d. Otherwise, write or update the destination file(s). Propagate to related concept and work pages as for any other capture.
    e. Append a single entry to `log.md` naming the source file and every destination touched:
@@ -196,7 +215,8 @@ Report findings; do not auto-fix structural issues without confirmation.
 
 - **Stay involved with the user.** Ingest one source at a time by default. Discuss key takeaways before writing summary pages.
 - **Propagate aggressively.** A single user action often touches 10-15 files across the wiki. This is expected. Do not under-update out of caution.
-- **Preserve the user's voice in `diary/`, `admin/`, `decisions/`, and `work/`.** When editing these, make minimal changes and ask before substantial rewrites.
+- **Preserve the user's voice in `admin/`, `decisions/`, and `work/`.** When editing these, make minimal changes and ask before substantial rewrites.
+- **`diary/` is user-directed but LLM-written** (see "Diary authorship"): write entries only when the user asks, to the gist they give. Suggest writing one freely; never start one unprompted. Where the user has written an entry themselves, preserve their voice as for any user-authored file.
 - **Own `wiki/` confidently.** Write, rewrite, restructure as needed to keep the synthesis current. The user reads; you maintain.
 - **Log everything.** Every ingest, every capture that creates or modifies a wiki page, every lint pass — one entry in `log.md`. Use the format `## [YYYY-MM-DD] <op> | <subject> | <short description>`.
 - **Never edit content in `raw/`** except for typo fixes or version replacements. Note such changes in `log.md`.

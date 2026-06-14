@@ -10,7 +10,7 @@ related_concepts: [tools-component, mcp-vs-skills, framework-four-components, co
 related_work: []
 status: summarized
 ingested: 2026-05-14
-updated: 2026-05-14
+updated: 2026-05-15
 ---
 
 # Anthropic (2024) — Introducing the Model Context Protocol

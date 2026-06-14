@@ -4,29 +4,17 @@
     "type": "split",
     "children": [
       {
-        "id": "1af1e7c35ca4097e",
+        "id": "48a5b8a8e5cac643",
         "type": "tabs",
         "children": [
           {
-            "id": "3b37a667b560a2f6",
+            "id": "40c2c9fd822a8c5e",
             "type": "leaf",
             "state": {
               "type": "graph",
               "state": {},
               "icon": "lucide-git-fork",
               "title": "Graph view"
-            }
-          },
-          {
-            "id": "5fb51713d5355984",
-            "type": "leaf",
-            "state": {
-              "type": "pdf",
-              "state": {
-                "file": "raw/literature/Karpukhin(2020).pdf"
-              },
-              "icon": "lucide-file-text",
-              "title": "Karpukhin(2020)"
             }
           }
         ]
@@ -53,6 +41,30 @@
               },
               "icon": "lucide-folder-closed",
               "title": "Files"
+            }
+          },
+          {
+            "id": "02a61723010bea71",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "raw/discussions/Claude Conversation on tools, mcp and skills.md",
+                "mode": "source",
+                "source": false,
+                "backlinks": true,
+                "backlinkOpts": {
+                  "collapseAll": false,
+                  "extraContext": false,
+                  "sortOrder": "alphabetical",
+                  "showSearch": false,
+                  "searchQuery": "",
+                  "backlinkCollapsed": false,
+                  "unlinkedCollapsed": true
+                }
+              },
+              "icon": "lucide-file",
+              "title": "Claude Conversation on tools, mcp and skills"
             }
           },
           {
@@ -180,46 +192,49 @@
   },
   "left-ribbon": {
     "hiddenItems": {
-      "terminal:Open terminal": false,
       "switcher:Open quick switcher": false,
       "graph:Open graph view": false,
       "canvas:Create new canvas": false,
       "daily-notes:Open today's daily note": false,
       "templates:Insert template": false,
       "command-palette:Open command palette": false,
-      "bases:Create new base": false,
-      "realclaudian:Open Claudian": false
+      "bases:Create new base": false
     }
   },
-  "active": "3b37a667b560a2f6",
+  "active": "40c2c9fd822a8c5e",
   "lastOpenFiles": [
-    "diary/2026-05-16.md",
-    "raw/literature/Karpukhin(2020).pdf",
-    "inbox/Untitled.md",
-    "Untitled.canvas",
-    "README.md",
-    "wiki/literature/matarazzo2025survey.md",
-    "wiki/literature/fielding2000.md",
-    "wiki/concepts/calibration-thread.md",
-    "wiki/literature/guo2017calibration.md",
-    "raw/literature/Matarazzo(2025).md",
-    "raw/literature/Fielding(2000).md",
-    "wiki/literature/lin2022truthfulqa.md",
-    "wiki/literature/yin2018case.md",
-    "wiki/literature/sequoia2026karpathy.md",
-    "wiki/literature/karpathy2025wiki.md",
-    "wiki/literature/weber2024taxonomy.md",
+    "raw/discussions/Claude Conversation on tools, mcp and skills.md",
+    "Untitled.md",
+    "work/module-skillful-agent.md",
+    "decisions/2026-06-02-tool-fairness-rulebook.md",
+    "decisions/2026-06-02-chess-agent-wiki-architecture.md",
+    "diary/meta/2026-06-02.md",
+    "diary/experiment-chess/2026-06-02.md",
+    "decisions/2026-06-01-typed-tool-harness-spec.md",
+    "decisions/2026-06-01-pydantic-ai-vllm-profile.md",
+    "diary/experiment-chess/2026-06-01.md",
+    "wiki/concepts/gemma4-vllm-pydantic-ai-integration.md",
+    "wiki/concepts/capability-delivery-dimensions.md",
+    "Clippings",
     "wiki/literature/aizawa2025tools.md",
-    "wiki/literature/rajasekaran2025.md",
-    "raw/literature/Yin(2028).md",
-    "wiki/literature/zhang2025.md",
-    "wiki/literature/krishnan2025multiagent.md",
-    "wiki/literature/martin2026managed.md",
-    "wiki/literature/sofroniew2026emotions.md",
-    "raw/literature/Sofroniew(2026).md",
-    "wiki/literature/peng2023copilot.md",
-    "wiki/literature/lewis2020rag.md",
-    "wiki/literature/karpukhin2020dpr.md",
-    "wiki/literature/simon1996artificial.md"
+    "wiki/concepts/deterministic-tools-hypothesis.md",
+    "raw/literature/Yin(2018).pdf",
+    "diary/experiment-chess/2026-05-18.md",
+    "diary/experiment-chess/2026-05-20.md",
+    "work/experiment-chess.md",
+    "wiki/concepts/skill-acquisition-loop.md",
+    "wiki/concepts/tool-fairness.md",
+    "diary/experiment-chess/2026-05-19.md",
+    "diary/experiment-chess/2026-05-16.md",
+    "diary/meta/2026-05-14.md",
+    "diary/meta",
+    "diary/experiment-chess",
+    "diary/2026-05-19.md",
+    "raw/literature/Karpukhin(2020).pdf",
+    "diary/2026-05-18.md",
+    "decisions/2026-05-14-three-zone-ownership-model.md",
+    "raw/other/karpathy-wiki.md",
+    "raw/other",
+    "Untitled.canvas"
   ]
 }

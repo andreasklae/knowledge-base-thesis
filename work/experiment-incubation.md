@@ -4,7 +4,7 @@ status: planning
 related_concepts: [incubation-as-infrastructure, workspace-component, context-engineering, calibration-thread]
 related_work: [interview-erfan-analysis]
 sources: [wallas1926art, sio2009incubation]
-updated: 2026-05-13
+updated: 2026-05-16
 ---
 
 # Experiment: Incubation Intervention
@@ -55,7 +55,7 @@ Parallel side-process exploration of adjacent framings; fixation-triggered (vs. 
 
 ## Connection to practitioner observation
 
-Erfan Nariman's account (see [[interview-erfan-analysis]]) of the XY problem in AI-assisted programming motivates the intervention design and is treated as inspirational, not evidential. See [[../decisions/2026-05-13-methodology-design-science.md]].
+Erfan Nariman's account (see [[interview-erfan-analysis]]) of the XY problem in AI-assisted programming motivates the intervention design and is treated as inspirational, not evidential. See [[2026-05-13-methodology-design-science]].
 
 ---
 *Lifted from `../manuscript-notes/essay-pointer.md` (Essay/essay.tex §3.6, §4.2-Experiment 6).*

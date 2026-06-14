@@ -1,7 +1,7 @@
 ---
 type: concept
 sources: [ericsson1993deliberate, sequoia2026karpathy, aizawa2025tools, karpathy2025wiki]
-related_concepts: [framework-four-components, skills-component, data-component, workspace-component, calibration-thread]
+related_concepts: [framework-four-components, skills-component, data-component, workspace-component, calibration-thread, skill-acquisition-loop]
 related_work: [experiment-chess]
 status: draft
 updated: 2026-05-16
@@ -46,7 +46,7 @@ Skill acquisition is only useful if the agent records procedures whose success c
 
 ## Batches as the operational unit of learning
 
-[[experiment-chess]] operationalises the temporal dimension with a concrete unit: a *batch* is the set of games played at a single commit hash of the agent's skill repo. Between batches is where self-correction happens — the agent inspects what went wrong, writes or revises skills, commits, and starts a new batch. This makes the learning loop both observable and reversible: every game record carries the skill-repo SHA it was played under, so any Elo movement can be attributed to a specific diff in the skill library. `git checkout <sha>` recreates the agent that played a given game.
+See [[skill-acquisition-loop]] for the full loop structure and current implementation status. In brief: [[experiment-chess]] operationalises the temporal dimension with a concrete unit: a *batch* is the set of games played at a single commit hash of the agent's skill repo. Between batches is where self-correction happens — the agent inspects what went wrong, writes or revises skills, commits, and starts a new batch. This makes the learning loop both observable and reversible: every game record carries the skill-repo SHA it was played under, so any Elo movement can be attributed to a specific diff in the skill library. `git checkout <sha>` recreates the agent that played a given game.
 
 The methodological pay-off is that "which actions caused the Elo to jump" becomes a query, not a guess: diff consecutive batch SHAs, read the structured batch diary, see what changed. This is the *temporal* claim discharged into experimental method.
 
