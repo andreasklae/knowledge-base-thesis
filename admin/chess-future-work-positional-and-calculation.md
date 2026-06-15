@@ -227,13 +227,93 @@ extracted), plus standard strategy references. Output: the principle/recipe
 wiki pages (A, G, H) with machine-verified examples, and the radar triggers
 that point to them (B, C, F, I).
 
-## Suggested sequencing (for when this becomes active work)
+## What the 2026-06-15 session actually established (read this before re-prioritising)
 
-1. Low-risk, high-value, isolated: **list-legal-moves-for-a-piece** (E),
+Three empirical results from this session reshape the priorities above. They
+are findings, not plans — but they change what the next cycle should attack
+first.
+
+### L. The blunder failure mode is MODEL-INVARIANT at this Elo (cross-model probe)
+
+We ran the same "play Maia-1100" task across a wide capability range:
+- **Haiku, no skill** (bare API, own knowledge): coherent opening, then
+  middlegame collapse, mated ~move 19.
+- **Haiku, with the full skill** (tools + wiki via standalone scripts):
+  SAME — mated ~move 19, 2x the tokens, and it reported *never reading the
+  wiki*.
+- **Sonnet, with the skill**: SAME class — 6.Nxe5?? netted a piece for
+  pawns in a Ruy Lopez, lost.
+- **Gemma-31B + full scaffolding**: the original Ne5/Nxd6/Nd2 blunders.
+
+**Implication for the model-upgrade question** (the user was weighing
+Gemini 3.x Flash / Grok / a stronger model): a model upgrade will NOT fix
+the piece-blundering — Sonnet does it too. The dominant loss mode at 1100
+is the perception-to-action gap ([[chess-perception-action-gap]]), not raw
+capability. This is a genuinely useful thesis result: it argues that the
+*infrastructure* (a mechanical gate) is the lever, not the model — which is
+exactly the framework's claim. It also means: if a model tier is added, add
+it as a SECOND BASELINE (replication axis), not as a fix, and keep each tier
+internally fixed across its PR ladder (the chess experiment's whole point is
+gains from the *user* side around a fixed model).
+
+### M. The SEE gate works and reframes "the gate" as a real contribution
+
+The commit-time gate, extended to refuse all single-ply losing trades via
+static-exchange evaluation (defended-but-losing trades, promotion-into-
+capture, side-effect hangs; soft-overridable vs hard-unconfirmable), was
+**validated live**: across two agent-vs-Maia-1100 games the agent held
+material even / -1 for 12-24 of its own moves with ZERO piece blunders,
+versus move-~16 piece-hang losses in every prior game. The gate fired ~15x
+per game on real losing-trade attempts and the agent rerouted each time.
+Because even Sonnet needs it (finding L), the gate is not a crutch for a
+weak model — it is a **model-independent productivity layer**, which is the
+cleanest possible instance of the framework's "infrastructure over
+capability" claim. Worth writing up as such. (Fairness: pure single-ply
+rules arithmetic, agent still chooses, settled by the user across three
+passes — see [[chess-perception-action-gap]].)
+
+### N. The residual losses are now MEASURED, not guessed — re-prioritise to these
+
+With single-ply blunders gone, both validation games still lost, but to two
+specific, higher-up-the-ladder causes:
+1. **Opening pawn-drops in book lines** (game d9a0fba2: Ruy Lopez, dropped
+   the e4 pawn to known theory). Root cause: the `openings/` wiki is EMPTY
+   (item K). This is the single most direct lever toward 1100 now.
+2. **Multi-ply tactics — specifically FORKS / capture-with-tempo** (game
+   bf4e1dd7: ...Nd4 then Nxc2 winning a pawn AND hitting the a1 rook ->
+   Nxa1, losing the exchange). The single-ply gate cannot see this by
+   design; it is items D (calculation/look-ahead) and H (fork detection).
+   A FORK/THREAT DETECTOR in the radar (defensive: "the enemy knight can
+   land on c2 winning a pawn and attacking your rook") is the highest-value
+   tactical add — pure geometry, perception-level, same fairness class as
+   the SEE gate and the defensive back-rank warning. It is a real feature
+   (false-positive tuning needed), prototyped but not built this session.
+
+## Suggested sequencing (REVISED 2026-06-15 with the above evidence)
+
+1. **Fork / capture-with-tempo threat detector** in the radar (defensive +
+   offensive) — finding N.2 shows this is now the top tactical loss cause;
+   same fair class as the shipped SEE gate. Tune for low noise.
+2. **Seed `openings/` with a minimal White repertoire** (item K / finding
+   N.1) — stops the opening pawn-drops; tutor-side ingestion, needs source
+   material.
+3. Low-risk isolated wins: **list-legal-moves-for-a-piece** (E),
    **opponent-move narration** (I), **per-move pros/cons** (B).
-2. Content: research + write the **principles/strategy/recipe wiki** (A, G,
-   H) and the **strengths/weaknesses radar** (C, F) with navigation tooling
-   (the scoped-context requirement in G).
-3. Hardest / needs fairness ruling: **multi-ply calculation & opponent
-   prediction** (D) and the **promotion-into-capture / blunders-despite-
-   warnings** problem (J).
+4. Content: **principles/strategy/recipe wiki** (A, G, H) + **strengths/
+   weaknesses radar** (C, F) with scoped-context navigation tooling (G) —
+   and crucially, address WHY the agent does not read the wiki even when it
+   has it (finding L: Haiku ignored the wiki entirely). The retrieval-
+   behaviour problem may matter more than adding more pages.
+5. Hardest / needs fairness ruling: **multi-ply calculation & opponent
+   prediction** (D). Note J (blunders-despite-gate) is now largely resolved
+   by the SEE gate; what remains there folds into D.
+
+**Meta-finding worth its own line in the thesis:** the agent under-uses the
+wiki it is given (Haiku reported never reading it; Gemma read it rarely).
+So "build a richer wiki" is necessary but NOT sufficient — the binding
+constraint is getting the model to *retrieve and act on* the right page at
+the right time (the scoped-navigation problem in G, and the act-on-tool-
+output problem in [[chess-perception-action-gap]]). Inline radar text (which
+the model always sees) outperformed read_reference (which it must choose to
+call) — a concrete data point for the Knowledge chapter's retrieval-vs-
+preload question.

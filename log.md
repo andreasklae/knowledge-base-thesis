@@ -950,3 +950,9 @@ Gemma 4's internal thought channel (`<|channel>thought<channel|>`) does not reli
 ## [2026-06-15] capture | admin/chess-future-work-positional-and-calculation.md | SEE gate resolved item J; added item K (opening theory)
 - Item J (blunders-despite-gate) marked largely RESOLVED: SEE gate landed this session (chess repo commits a8db9c0/f693e1a/7c2356f), validated live in game d9a0fba2 (zero piece blunders, 24+ moves at -1).
 - Added item K: openings/ wiki folder is empty; agent loses pawn-down book lines in the opening — the new bottleneck toward 1100-competitiveness. Tutor-side ingestion task, fairness-bound.
+
+## [2026-06-15] capture | admin/chess-future-work-positional-and-calculation.md | Expand backlog with session findings L/M/N + revised sequencing
+- L: blunder failure mode is model-invariant (Haiku/Sonnet/Gemma all hang pieces vs 1100) -> model upgrade won't fix it; add stronger model only as a second baseline.
+- M: SEE gate validated live (zero piece blunders over 2 games) -> the gate is a model-independent productivity layer, a clean instance of the framework's infra-over-capability claim.
+- N: residual losses now MEASURED -> (1) opening pawn-drops (empty openings/ wiki), (2) forks/capture-with-tempo (single-ply gate can't see). Revised sequencing puts a fork detector + opening theory first.
+- Meta-finding: agent under-uses the wiki even when given it; inline radar text beat read_reference. Retrieval-behaviour is the binding constraint, not page count (feeds Knowledge chapter retrieval-vs-preload).
