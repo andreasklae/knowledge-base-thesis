@@ -178,6 +178,43 @@ model anchors on the headline gain and doesn't process the follow-up — a
 capability limit, not purely a tooling one. Needs investigation, and is the
 most important behavioural failure to crack.
 
+**UPDATE 2026-06-15 — largely RESOLVED this session.** The commit gate was
+extended to refuse ALL single-square losing trades via static-exchange
+evaluation (SEE): defended-but-losing trades (the Ne5/Nxd6/Nxe5 class),
+promotion-into-capture, side-effect hangs the move causes, and a soft
+warning when committing with a rescuable already-hanging piece. Hard
+(unconfirmable) for self-losing cases. Validated live (game d9a0fba2,
+Gemma vs Maia-1100): the agent held material at -1 with ZERO piece blunders
+through 24+ of its own moves (vs move-~16 losses in every prior game); the
+gate fired 15x on real losing-trade attempts. So the blunder class is
+eliminated within the fairness rules. What remains under J is only the
+RESIDUAL capability question — whether the model would still find a way to
+shed material the single-ply SEE can't see (multi-ply tactics) — which
+folds into item D (calculation / look-ahead).
+
+## K. Opening theory — the new bottleneck once blunders are gone
+
+With blunders gated out (item J), the agent's losses shifted to a different
+cause: it walks into a **pawn-down book line in the opening** and then loses
+the long endgame on technique. Game d9a0fba2: a Ruy Lopez where
+7.O-O Nxe4 8.d3 left it a clean pawn down to known theory — not a blunder
+the gate can catch (no single-ply hanging piece), just bad opening play.
+Root cause confirmed: **the `openings/` wiki folder is EMPTY** (only the
+index, "none yet — the tutor seeds these by ingestion"). The agent has no
+opening guidance at all, so it drifts into inferior/pawn-losing lines.
+
+Next-cycle work: seed `openings/` with a small, high-value set of opening
+pages (a sound repertoire for White as the agent plays White — e.g. handle
+the Ruy Lopez/Italian/Scotch lines it actually reaches, with the key "don't
+drop this pawn / recapture here" notes), following the page contract and
+machine-verified lines. This is the most direct lever toward
+1100-competitiveness now that the early-middlegame piece-hangs are fixed.
+Pairs with the radar surfacing "you are still in the opening, develop /
+castle / don't grab that pawn" (the development items under C). Tutor-side
+ingestion task (the user supplies/points at opening sources); do NOT
+auto-generate opening theory from the model's own memory — that violates
+the learning-loop fairness contract.
+
 ---
 
 ## Cross-cutting research task

@@ -946,3 +946,7 @@ Gemma 4's internal thought channel (`<|channel>thought<channel|>`) does not reli
 - Appended pointer to admin/ideas.md.
 - Cross-linked from decisions/2026-06-15-config2-calibration-and-next-steps.md.
 - NOTE: no chess-wiki/agent-capability changes made, per user instruction (KB-only capture).
+
+## [2026-06-15] capture | admin/chess-future-work-positional-and-calculation.md | SEE gate resolved item J; added item K (opening theory)
+- Item J (blunders-despite-gate) marked largely RESOLVED: SEE gate landed this session (chess repo commits a8db9c0/f693e1a/7c2356f), validated live in game d9a0fba2 (zero piece blunders, 24+ moves at -1).
+- Added item K: openings/ wiki folder is empty; agent loses pawn-down book lines in the opening — the new bottleneck toward 1100-competitiveness. Tutor-side ingestion task, fairness-bound.
