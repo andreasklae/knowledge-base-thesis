@@ -59,6 +59,16 @@ technique:
   ignored count-based warnings — see [[chess-perception-action-gap]]).
   Open question for the next cycle: does surfacing exchange *value* change
   behaviour, or is value-weighted trade decision a model-capability ceiling?
+- **Tactical awareness — forks (both directions).** The agent misses
+  forks: it walked into an opponent fork, and separately failed to play a
+  knight fork that would have won the enemy queen with check. The current
+  perception tools report attacker/defender geometry on individual squares
+  but never flag a *single piece attacking two valuable targets at once*.
+  Candidate fair improvement (perception-level, per the rulebook): a
+  fork/double-attack detector in `imagine_move` / the radar — "this knight
+  on e6 would attack both the king and the queen" — for the agent's own
+  candidate moves and as a threat-scan of the opponent's replies. Geometry
+  only; the agent still chooses.
 - **Reading the opponent's plan.** The agent does not anticipate the
   opponent's threats/plans well — e.g. allowing a passed pawn to promote
   (smoke game 1b3e94c0: g3-g2-g1=Q conceded a queen). Candidate fair
