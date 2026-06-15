@@ -1,0 +1,202 @@
+# Chess agent — future-work backlog: positional knowledge, calculation, and recipes (2026-06-15)
+
+Captured from the user's observations after the first PR2 ranked smoke
+batch. **Nothing here has been implemented** — this is the design backlog
+for the *next* improvement cycle. Do NOT touch the chess wiki or anything
+affecting agent capabilities until this is scheduled work; this document
+and the KB are the only things to edit now. Companion to the ADR
+[[2026-06-15-config2-calibration-and-next-steps]], which holds the
+already-recorded items (trade SEE, forks, opponent-plan, quiet-move
+checklist). This doc goes deeper and adds the new themes.
+
+> **Caveat on grounding:** the user asked for a deep analysis of "game 4 of
+> the batch" (vs a 700, an easy win thrown away with blundered pieces and a
+> pawn promoted into immediate capture). That batch was reverted at the
+> user's request and the per-game JSON logs were deleted, so the move-level
+> detail no longer exists. The *pattern* is recorded below from the user's
+> description and the ranked.csv summary (PR2 games 063–068: a 1-0, two
+> draws, and three losses incl. vs 700 and 850). Re-analysis requires
+> re-running and KEEPING such a game before the next cycle.
+
+---
+
+## A. Principles / playing rules (wiki: `principles/`, `strategic-thinking/`)
+
+A library of heuristics the agent should follow "unless there is a good
+reason not to." Surfaced as quiet-move guidance and as wiki theory. The
+deep-dive task: **research what is canonically considered good vs bad play**
+(opening principles, middlegame strategy, endgame technique) and turn each
+into a short, machine-checkable wiki page + a one-line radar trigger.
+
+Opening / general conduct:
+- Don't move the queen out early.
+- Don't move the king before castling; castle early.
+- Develop minor pieces before major pieces; don't move the same piece twice
+  in the opening without reason.
+- Don't double your own pawns without compensation; keep pawns connected
+  ("pawns should go together").
+- Control the centre.
+
+Middlegame / strategic:
+- Put rooks on open and half-open files; double rooks on a file.
+- Put pressure on pinned pieces (they can't move — pile attackers on them).
+- Knights want outposts; bishops want open diagonals; trade your bad piece.
+- Create and exploit weaknesses in the opponent's structure.
+
+Simplification / converting an advantage:
+- **When up material, trade pieces (not pawns)** to simplify toward a won
+  endgame.
+- Prefer promoting a pawn over hunting a fancy mate; prefer an easy/simple
+  mate over the fastest mate.
+- Know when NOT to push for mate — when to take a draw or force stalemate-
+  free simplification.
+
+"My piece is attacked — the four responses" (a decision recipe):
+1. defend it, 2. move it, 3. counter-check, 4. create a bigger threat.
+Plus: **don't bother threatening a piece that can just step away without
+cost** — only threats that actually win something or force a concession
+count.
+
+## B. Per-move pros/cons on `imagine_move`
+
+Augment `imagine_move` so each candidate gets a short, structured
+**pros / cons** read, in addition to the existing geometry. Example the
+user gave:
+> Pros: doubling the rooks, weakens the opponent's king.
+> Cons: rook no longer defends the knight, blocks the dark-squared bishop.
+
+Each pro/con must be a mechanical fact (a file opened, a defender dropped, a
+diagonal blocked, a square weakened, a piece's mobility changed) — not an
+engine verdict. This is the move-level mirror of the positional checklist.
+
+## C. Strengths & weaknesses lists (both sides)
+
+`show_position` / radar should list, for BOTH colours:
+- **Weaknesses:** doubled/isolated/backward pawns, open king, loose pieces,
+  fork squares (e.g. "K and Q/R can be forked by a knight landing on c2,
+  which is unprotected"), bad pieces, holes.
+- **Strengths:** passed pawns, centre control, material lead, rook on an
+  open file, bishop pair, space, outposts.
+
+Then — the harder part the user emphasised — **instruct/suggest how to ACT
+on each**: a weakness in the opponent's camp is a target (attack the
+backward pawn, occupy the hole); a strength of yours is something to press
+(push the passed pawn, open a second front with the bishop pair). The wiki
+pages carry the "how to use this feature" method; the radar names the
+feature and points to the page.
+
+## D. Calculation, look-ahead, and predicting opponent moves
+
+The big capability gap. Needs:
+- **Exchange calculation** beyond the single-square SEE already added —
+  multi-square / multi-exchange sequences.
+- **Visualising future positions** generally: a way to *scope* candidate
+  continuations a few plies deep without exploding context.
+- **A good way to predict the opponent's reply** so look-ahead is realistic
+  (not just assuming the opponent cooperates). Today the only primitive is
+  `imagine_move(move="pass")`.
+- Open design question: how to give bounded, useful multi-ply look-ahead
+  while staying inside the tool-fairness rulebook (mechanics/agent-driven
+  calculation, NOT an engine search). This is the riskiest item for
+  fairness — flag for explicit user ruling before building.
+
+## E. New tool: list legal moves for a specific piece
+
+Concrete, low-risk, high-value. When `show_position` says "your queen is in
+danger," the agent should be able to call something like
+`list_legal_moves(piece="queen")` or `list_legal_moves(square="d1")` to see
+just that piece's escape/relocation options, instead of scanning the whole
+legal-move table. Pure mechanics (legal-move enumeration filtered by piece).
+
+## F. Mate knowledge in the MIDDLEGAME, not just endgames
+
+The mate radar / triggers currently seem to fire mainly in thinned-out
+endgame positions. The agent needs to recognise **mating threats with full
+boards** — both delivering them and (critically) **defending against the
+opponent's**. The user saw it blunder **mate-in-2 against it** at least
+twice (one in a lost position, one not). Defensive mate-threat detection is
+as important as offensive. The named-mate pages exist; the gap is the
+*trigger* surfacing them mid-game and a "are I/they threatening mate next
+move?" check.
+
+## G. More recipes for specific scenarios
+
+Beyond the basic mates, the user wants recipes for recurring concrete
+situations, e.g.:
+- **Pawn-promotion strategies** — the user saw the agent fail to walk two
+  connected pawns up with the king escorting; it lost one pawn (then
+  promoted the other faster, so not fatal, but it should know the
+  technique). K+2P, K+P vs K (already have one), outside passed pawn, etc.
+- Other endgame/middlegame "how to do X" recipes as they surface.
+
+The architectural requirement the user stressed: **a RICH wiki but a SCOPED
+context.** The agent needs good tools + instructions to NAVIGATE the wiki —
+read the few critical pages, skip the irrelevant ones — so the corpus can
+grow large without blowing the context budget or causing the agent to miss
+the one page that matters. This is a retrieval/navigation problem on top of
+the content problem.
+
+## H. Tactical motifs to add
+
+- **Pins** — how to pin a piece and then pile up to win it.
+- **Skewers** — the reverse pin.
+- **Forks** — already in the ADR; reiterate as part of a unified
+  tactical-motif set.
+
+## I. Narrate the opponent's last move ("what changed")
+
+When the opponent moves, tell the agent **what that move did**, in
+mechanical terms, e.g.:
+> "Opponent played Bc2 — now attacking your queen and no longer defending
+> its rook on a4."
+> "You were in check; the check is now blocked by the knight on e5."
+
+Then instruct the agent to **reflect on how this changes the position and
+its plan**. Crucial framing the user insists on: the agent is bad at
+visualising, so it must **reason over the information the tools give it,
+not over what it imagines it 'sees'** on the board. The whole design
+philosophy is: tools convert the board into explicit facts; the agent
+reasons over the facts.
+
+## J. The unsolved one: it still blunders despite warnings + the gate
+
+The user flagged this with no clear fix: the agent **still sometimes
+blunders pieces even though `imagine_move` warned and the commit gate is
+on.** The gate catches free hangs (and now minor-for-pawn into undefended
+squares) and refuses hard losses, but soft cases get `confirm`'d or the
+move differs from what was imagined. Connects to
+[[chess-perception-action-gap]] and [[chess-gemma-toolcall-behaviour]]. The
+specific recurring sub-pattern the user named:
+> It gains a lot of material points and **doesn't realise those points will
+> be lost immediately** — e.g. promoting a pawn that is captured next move
+> (the promotion shows +800 material, the recapture isn't weighed).
+
+Candidate angle: the material-delta line and SEE should net the *opponent's
+immediate forced recapture* into the number the model sees, so a promotion-
+into-capture reads as ~0, not +800. But the deeper issue may be that the
+model anchors on the headline gain and doesn't process the follow-up — a
+capability limit, not purely a tooling one. Needs investigation, and is the
+most important behavioural failure to crack.
+
+---
+
+## Cross-cutting research task
+
+The user explicitly asked for a **deep dive into chess principles and
+patterns** — what is canonically good vs bad — before building. Sources to
+mine: the Capablanca book already in the corpus (`raw/`, "Chess
+Fundamentals" — look for MORE material there beyond the basic mates already
+extracted), plus standard strategy references. Output: the principle/recipe
+wiki pages (A, G, H) with machine-verified examples, and the radar triggers
+that point to them (B, C, F, I).
+
+## Suggested sequencing (for when this becomes active work)
+
+1. Low-risk, high-value, isolated: **list-legal-moves-for-a-piece** (E),
+   **opponent-move narration** (I), **per-move pros/cons** (B).
+2. Content: research + write the **principles/strategy/recipe wiki** (A, G,
+   H) and the **strengths/weaknesses radar** (C, F) with navigation tooling
+   (the scoped-context requirement in G).
+3. Hardest / needs fairness ruling: **multi-ply calculation & opponent
+   prediction** (D) and the **promotion-into-capture / blunders-despite-
+   warnings** problem (J).

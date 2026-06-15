@@ -940,3 +940,9 @@ Gemma 4's internal thought channel (`<|channel>thought<channel|>`) does not reli
 
 ## [2026-06-11] capture | decisions/2026-06-11-pattern-triggers.md | Pattern-trigger fairness ADR
 - Settles wiki-driven mating-pattern hints: fire on geometry-present (must still fire when refuted), every hint traces to a wiki page (template_ frontmatter + one generic matcher), spam-capped. Same record covers the agent-composed threat primitive (imagine fen=/pass) and the tutor-side wiki validator.
+
+## [2026-06-15] capture | admin/chess-future-work-positional-and-calculation.md | Chess agent future-work backlog from PR2 smoke-batch notes
+- Created admin/chess-future-work-positional-and-calculation.md (playing principles, per-move pros/cons, strengths/weaknesses both sides, calculation+opponent prediction, list-legal-moves-per-piece tool, middlegame mate awareness, scenario recipes in a rich-but-scoped wiki, tactical motifs, opponent-move narration, blunders-despite-warnings problem; cross-cutting Capablanca/principles research task).
+- Appended pointer to admin/ideas.md.
+- Cross-linked from decisions/2026-06-15-config2-calibration-and-next-steps.md.
+- NOTE: no chess-wiki/agent-capability changes made, per user instruction (KB-only capture).

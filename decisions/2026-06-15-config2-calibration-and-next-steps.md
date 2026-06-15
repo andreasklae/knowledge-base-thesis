@@ -118,6 +118,14 @@ technique:
   contract (When to use / The idea / What to do / Watch out for) and every
   concrete claim stays machine-verified by the wiki validator.
 
+A deeper, broader backlog expanding on all of the above — playing
+principles, per-move pros/cons, strengths/weaknesses for both sides,
+calculation & opponent prediction, a list-legal-moves-for-a-piece tool,
+middlegame mate awareness, scenario recipes in a rich-but-scoped wiki,
+tactical motifs, opponent-move narration, and the unsolved
+blunders-despite-warnings problem — is captured in
+[admin/chess-future-work-positional-and-calculation.md](../admin/chess-future-work-positional-and-calculation.md).
+
 ## Consequences
 
 - Merging locks this configuration as a measured Config-2 version; future
