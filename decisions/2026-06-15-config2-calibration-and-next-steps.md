@@ -77,6 +77,47 @@ technique:
   enemy passed pawns and immediate threats. All must stay perception-level
   per the rulebook.
 
+- **Quiet-move / positional guidance (when nothing is forcing).** This is
+  the agent's biggest behavioural gap and the largest single next-cycle
+  item. When there is no capture, check, or immediate threat, the agent has
+  no sense of *what to improve*, so it drifts and shuffles (this is also
+  what kills the basic-mate conversions and the long middlegames). A human
+  consults a standing checklist of positional considerations. We want the
+  radar (mechanical, geometry-only, fair) to surface these **only when the
+  position is quiet** — i.e. suppressed whenever a tactic/threat is live, so
+  it is signal not noise — AND the same content must exist in the wiki as
+  general theory the agent can read (`strategic-thinking/`, `principles/`),
+  so the tool is a pointer into the agent's own corpus, not an oracle.
+
+  Candidate checklist items (each is pure board geometry / counting):
+  - **Development:** undeveloped minor pieces still on the back rank;
+    "you have not castled and the king is still in the centre"; rooks not
+    connected / not on open or half-open files.
+  - **King safety:** open files or diagonals pointing at your king; missing
+    pawn shield; no luft (already have the defensive back-rank check —
+    generalise it).
+  - **Pawn-structure weaknesses:** doubled pawns, isolated ("lone") pawns,
+    backward pawns, pawn islands, holes/outposts (squares no pawn can ever
+    defend) for both sides.
+  - **Loose pieces and latent tactics:** undefended ("loose") pieces of
+    either side (the "loose pieces drop off" heuristic); a square from which
+    a knight would fork two valuable pieces — e.g. "a black knight reaching
+    c2 forks your king and rook, and c2 is not covered" (ties into the fork
+    detector above, applied as a *standing* warning, not just on a candidate
+    move).
+  - **Piece activity:** a piece with very low mobility ("bad bishop" blocked
+    by its own pawns, a knight on the rim), or an enemy piece dominating an
+    outpost in your camp.
+  - **Space and files:** who controls the open file; space-count by half.
+
+  Design constraints: gate hard on "position is quiet" so these never fire
+  over a real tactic; keep each line short and prioritised (a wall of
+  positional text every quiet turn would drown the agent); and pair every
+  radar line with the wiki page that teaches the concept, since the corpus
+  *is* the Config-2 contribution. Each wiki page follows the existing page
+  contract (When to use / The idea / What to do / Watch out for) and every
+  concrete claim stays machine-verified by the wiki validator.
+
 ## Consequences
 
 - Merging locks this configuration as a measured Config-2 version; future
