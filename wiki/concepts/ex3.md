@@ -65,7 +65,7 @@ rsync -avrz <sourcedir> <user>@srl-login1.ex3.simula.no:D1/
 | n004 | 2x AMD EPYC 7601 | 2TB | 1x AMD Instinct Mi100 | defq, mi100q |
 | n001–n003 | 2x AMD EPYC 7601 | 2TB | AMD Vega20 GPU | defq, amdgpuq |
 
-**Best options for LLM inference:** g002 hgx2q (2× A100 80GB, TP=2, 128k context, no offload — **current default for [[module-llm-server]]**, reserve in advance), gh001/gh002 gh200q (GH200 96GB HBM3, aarch64, 64k with CPU offload — good fallback, usually idle), n013–n014 a100q (2× A100 40GB, 8k context only).
+**Best options for LLM inference:** g002 hgx2q (2× A100 80GB, TP=2, 64k context, no offload — **current default for [[module-llm-server]]**, reserve in advance; note 128k does *not* fit on only 2 cards, see [[module-llm-server]]), gh001/gh002 gh200q (GH200 96GB HBM3, aarch64, 64k with CPU offload — good fallback, usually idle), n013–n014 a100q (2× A100 40GB, 8k context only).
 
 ### Other Nodes (non-GPU)
 

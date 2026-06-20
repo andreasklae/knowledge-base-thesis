@@ -956,3 +956,35 @@ Gemma 4's internal thought channel (`<|channel>thought<channel|>`) does not reli
 - M: SEE gate validated live (zero piece blunders over 2 games) -> the gate is a model-independent productivity layer, a clean instance of the framework's infra-over-capability claim.
 - N: residual losses now MEASURED -> (1) opening pawn-drops (empty openings/ wiki), (2) forks/capture-with-tempo (single-ply gate can't see). Revised sequencing puts a fork detector + opening theory first.
 - Meta-finding: agent under-uses the wiki even when given it; inline radar text beat read_reference. Retrieval-behaviour is the binding constraint, not page count (feeds Knowledge chapter retrieval-vs-preload).
+
+## [2026-06-16] capture | raw/other/2026-06-wtharvey-mate-puzzles.md | Saved wtharvey.com mate-puzzle collections (mate-in-2/3/4 + back-rank) as a sourced puzzle resource for experiment-chess; recorded the three verified back-rank mate-in-2 FENs wired into scripts/run_puzzles.py.
+
+## [2026-06-17] revise | module-llm-server + ex3 | Correction: 128k does NOT fit on 2× A100 80GB
+- **Root cause of a recurring failure mis-diagnosed earlier.** Three hgx2q vLLM launches "FAILED" over June. I had attributed all of them to dirty GPUs (another user's processes holding VRAM). Reading the actual logs: only the *first* (job 1260495, 2026-06-01) was dirty-GPU (`Free memory on cuda:0 13.78/79.25 GiB`). The two most recent (1301617, 1302238) were **clean allocations** that failed purely on a config error: `--max-model-len 131072` on 2 cards needs 55 GiB KV cache but only ~27 GiB remains after weights + CUDA graphs. vLLM reported the real ceiling: ~64,800 tokens.
+- **The KB had propagated an unverified "128k on hgx2q" claim.** The 2026-06-01 log/page update recorded "128k verified" — it was not; the job that "verified" it had actually failed. Corrected `work/module-llm-server.md` (config block, partition table, context-limits section) and `wiki/concepts/ex3.md` ("best options" line) to state **64k is the practical ceiling on 2× A100 80GB**; 128k would require 4× A100 80GB (TP=4).
+- **Fixed `software/ex3/serve.py`** (experiment repo, not KB): hgx2q `extra_flags_override` changed `--max-model-len 131072 → 65536` (+ `--max-num-batched-tokens`), with an inline comment explaining the KV-cache math and the engine-reported ceiling.
+- Lesson for the KB: a "✅ verified" claim must come from a job that actually reached `vLLM is ready`, not one that was assumed to work. The dirty-GPU gotcha (added 2026-06-01) is real but was over-applied as a blanket explanation; the config ceiling is the more common cause on clean nodes.
+
+## [2026-06-19] capture | diary/experiment-chess/2026-06-19 | Basic-mate technique, blunder gate, technique-vs-sacrifice boundary
+- Created diary/experiment-chess/2026-06-19.md (LLM-written at user request; covers branch work 06-13 → 06-19 on `mating-patterns-and-strategy`).
+- Summarises three threads: (A) SEE blunder gate + value-based exchange warnings, (B) single-major mate technique reduced to Capablanca's one rule with piece-specific confine_state metric, (C) real puzzle sourcing + the mate-conversion sweep.
+- Headline finding: agent converts material+technique mates (K+2R, K+R, K+Q, back-rank, arabian, anastasia, greco, hook, opera) but fails sacrifice-combination mates (smothered, blind-swine) even with the forced line documented.
+- All work is experimental/puzzle (Elo frozen); ranked record still ends at game 053, Elo 793.6. No wiki/concept pages changed.
+
+## [2026-06-20] decision | 2026-06-20-defer-minor-piece-mates | Defer K+2B and K+B+N basic mates as out of scope for the current model
+- Created decisions/2026-06-20-defer-minor-piece-mates.md (user-directed).
+- Decision: stop investing in making the agent convert the two minimal minor-piece mates; keep their pages/tools as curriculum; treat non-conversion as a finding. Basic-mate curriculum considered complete.
+- Evidence: no simple fair geometric potential solves K+2B/K+B+N (region/corner/king-march weightings all cap under depth-4 search vs optimal defense); a full solver would violate the tool-fairness rulebook; the mates are unrealistic for the ~700–800 internal Elo under test.
+
+## [2026-06-20] capture | diary/experiment-chess/2026-06-20 | Full basic-mate curriculum: what converts, the minor-piece boundary, pivot to realistic conversion
+- Created diary/experiment-chess/2026-06-20.md (LLM-written at user request).
+- Records the curriculum sweep vs Maia-1100: all major mates + over-material minor combos convert (K+R+N draw→win via a new repetition-aware advisor gate; K+2B+2N 35p; K+B+2N 65p); K+2B and K+B+N do not (the boundary).
+- Tooling built: tablebase position generator, fair ply-cap (2·dtm+slack), 409-retry, king_free_region net visualization, chess__imagine_line, region-based minor advisor, two new principle pages.
+- Updated wiki/concepts/deterministic-tools-hypothesis.md (added the K+B+N capability-boundary anchor for experiment-chess).
+- Pivot: realistic material-conversion ladder (queen-up → one-pawn rook endgame) started; results pending.
+
+## [2026-06-20] capture | diary/experiment-chess/2026-06-20 | Conversion-ladder results + confine-with-pawns fix + the exchange boundary
+- Appended conversion results to the open 2026-06-20 diary entry.
+- Q-up 1-0 (71p), R-up 1-0 (39p), RK-pawns 1-0 (Rh7# 31p) — all converted; exch-up ½–½ FAIL (threw away +2, ended bare king, saved by a Maia stalemate).
+- Recorded the confine-with-pawns fix (_radar.py single-major drill now fires vs king+pawns, not just bare king; + promotion-threat note + pawn caveat) that rescued R-up's grind; 315 tests pass.
+- Boundary: agent converts extra-material-then-simplify (Q/R/R+K+pawns) but not a subtler positional edge (the exchange) — simplification-direction judgement is the missing competence; links to the next-cycle promotion backlog.

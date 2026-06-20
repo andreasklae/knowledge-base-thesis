@@ -43,7 +43,7 @@ Press **Ctrl+C** to cancel the Slurm job and close the tunnel. With `--attach`, 
 - **Fallback partition**: `gh200q` (1× GH200 96GB, aarch64). Uses `venv-gh200`. Requires CPU offload; higher latency.
 - **Last resort**: `a100q` (2× A100 40GB, x86_64, 8k context only). Uses `venv`.
 - **Model**: `google/gemma-4-31B-it` (BF16, multimodal).
-- **Context window**: **128k on hgx2q** (no offload). **64k on gh200q** with `--cpu-offload-gb 120`. 8k on a100q.
+- **Context window**: **64k on hgx2q** (no offload — see correction below). **64k on gh200q** with `--cpu-offload-gb 120`. 8k on a100q.
 - **Tool calling**: enabled via `--enable-auto-tool-choice --tool-call-parser gemma4`.
 - **Serving**: vLLM 0.21.0, OpenAI-compatible HTTP on `0.0.0.0:28811` of the compute node.
 - **Access from laptop**: SSH tunnel `localhost:11500 → <node>:28811`.
@@ -51,13 +51,15 @@ Press **Ctrl+C** to cancel the Slurm job and close the tunnel. With `--attach`, 
 
 ## Partition comparison
 
-| Partition | Node | VRAM | Arch | TP | Max context | Latency | Notes |
+| Partition | Node | VRAM (allocated) | Arch | TP | Max context | Latency | Notes |
 |-----------|------|------|------|----|-------------|---------|-------|
-| hgx2q | g002 | 2×80 GB (of 8 total) | x86_64 | 2 | **128k** (no offload) | **Fast** | **Recommended**; often occupied — reserve in advance |
+| hgx2q | g002 | 2×80 GB (of 8 total) | x86_64 | 2 | **64k** (no offload) | **Fast** | **Recommended**; often occupied — reserve in advance |
 | gh200q | gh001/gh002 | 96 GB HBM3 | aarch64 | 1 | 64k (120 GB CPU offload) | Slower (offload) | Good fallback; usually idle |
 | a100q | n013/n014 | 2×40 GB | x86_64 | 2 | 8k | Fast | Last resort; 8k is tight for most workloads |
 
-**Why hgx2q is preferred over gh200q:** Both fit the 31B model, but hgx2q uses no CPU offload — all KV cache stays on GPU. gh200q's `--cpu-offload-gb 120` swaps KV cache blocks to CPU RAM during inference, adding latency per token. For single-request workloads (chess experiment, interactive use) this difference is noticeable.
+**Why hgx2q is preferred over gh200q:** Both fit the 31B model at 64k context, but hgx2q uses no CPU offload — all KV cache stays on GPU. gh200q's `--cpu-offload-gb 120` swaps KV cache blocks to CPU RAM during inference, adding latency per token. For single-request workloads (chess experiment, interactive use) this difference is noticeable.
+
+**Correction (2026-06-17): 128k does NOT fit on 2× A100 80GB.** Earlier docs claimed "128k, no offload" on hgx2q — this was never verified and is wrong. With only **2** cards allocated (160 GB total) at TP=2: after weights (~58 GiB) + CUDA graphs, only ~27 GiB of KV cache remains. 131072 context needs 55 GiB and fails with `ValueError: ... estimated maximum model length is ~64800`. Three real failures (jobs 1301617, 1302238) hit this. **64k is the practical ceiling on 2 cards.** 128k would require **4× A100 80GB (TP=4)**. The serve.py hgx2q override has been corrected from 131072 → 65536.
 
 **TP size must be a power of 2.** vLLM tensor parallelism requires the TP size to divide evenly into the model's attention heads. Valid options: 1, 2, 4, 8. Using 3 or any odd number > 1 will fail.
 
@@ -88,8 +90,10 @@ On **gh200q** (1× GH200 96GB), after model load ~5.34 GiB remains for KV cache 
 - **64k + `--cpu-offload-gb 120` ✅ works** — final gh200q configuration
 - vLLM reports estimated max context of 71,760 tokens with 120 GB offload, so 64k has headroom
 
-On **hgx2q** (2× A100 80GB, TP=2), total 160 GB VRAM:
-- **128k ✅ works** (no offload needed) — verified 2026-06-01
+On **hgx2q** (2× A100 80GB allocated, TP=2), 160 GB VRAM:
+- 128k ❌ OOM — after weights (~58 GiB) + CUDA graphs, only ~27 GiB KV cache remains; 131072 needs 55 GiB. Engine-reported ceiling ~64,800 tokens (jobs 1301617, 1302238). The earlier "128k verified" claim was wrong.
+- **64k ✅ works** (no offload needed). This is the practical ceiling on 2 cards.
+- 128k would need 4× A100 80GB (TP=4) — not yet tested.
 
 ## Things that did not work
 

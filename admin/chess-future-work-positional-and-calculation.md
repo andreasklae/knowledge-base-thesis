@@ -108,6 +108,29 @@ danger," the agent should be able to call something like
 just that piece's escape/relocation options, instead of scanning the whole
 legal-move table. Pure mechanics (legal-move enumeration filtered by piece).
 
+**DONE (2026-06-16, partial): safe-squares-for-a-hanging-piece, folded into
+`show_position`.** When a piece is attacked and losing material (SEE < 0), the
+radar now lists that piece's *safe* legal destination squares (squares that
+are not attacked by the enemy, or are defended) so the agent can relocate it
+without re-hanging it. Motivated live: in a K+R drill the agent slid an
+attacked rook H5→A5 (fine for a rank-fence, but it had no list of which
+squares kept it safe). Pure mechanics; tool-fair.
+
+**Still future work (the harder cases the safe-squares list does NOT yet
+handle):**
+- **Discovered attacks:** moving the hanging piece may open a line, so a
+  "safe" destination can lose *other* material (or, conversely, a move may be
+  good because it discovers an attack). The square-by-square safe list is
+  blind to what moving the piece *uncovers*. Need to evaluate the resulting
+  position's hanging-piece set, not just the moved piece's landing square.
+- **Several pieces under attack at once:** when two or more of our pieces are
+  attacked, a single piece's safe-square list is insufficient — we need to
+  rank moves by *how much total material they save* (e.g. a move that defends
+  or removes the attacker on the more valuable piece, or a fork-escape that
+  saves both). This is a small search/priority problem: for each candidate,
+  sum the material still hanging after it and minimise. Keep it
+  agent-decides (report the saved/lost totals; do not pick the move).
+
 ## F. Mate knowledge in the MIDDLEGAME, not just endgames
 
 The mate radar / triggers currently seem to fire mainly in thinned-out

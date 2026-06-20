@@ -4,8 +4,8 @@ status: in-progress
 related_concepts: [skills-component, data-component, deterministic-tools-hypothesis, learning-as-temporal-dimension, calibration-thread]
 related_work: [experiment-math, experiment-riksantikvaren, module-skillful-agent, module-llm-server]
 sources: [ericsson1993deliberate, sequoia2026karpathy, karpathy2025wiki]
-related_decisions: [2026-05-20-elo-and-batch-runner, 2026-05-26-single-step-matchmaking, 2026-05-25-baseline-calibration-complete, 2026-05-25-initial-elo-1200, 2026-06-02-chess-agent-wiki-architecture, 2026-06-02-tool-fairness-rulebook]
-updated: 2026-06-02
+related_decisions: [2026-05-20-elo-and-batch-runner, 2026-05-26-single-step-matchmaking, 2026-05-25-baseline-calibration-complete, 2026-05-25-initial-elo-1200, 2026-06-02-chess-agent-wiki-architecture, 2026-06-02-tool-fairness-rulebook, 2026-06-20-defer-minor-piece-mates]
+updated: 2026-06-20
 ---
 
 # Experiment: Skill-Acquisition Trajectory and Chess Tournament

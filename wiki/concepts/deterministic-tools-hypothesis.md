@@ -4,7 +4,7 @@ sources: [sequoia2026karpathy, kalai2024hallucinate, aizawa2025tools, matarazzo2
 related_concepts: [calibration-thread, tools-component, framework-four-components, agent-infrastructure-vs-capability, skills-component]
 related_work: [experiment-math, experiment-riksantikvaren, experiment-chess]
 status: draft
-updated: 2026-05-16
+updated: 2026-06-20
 ---
 
 # Deterministic-Tools Hypothesis
@@ -34,6 +34,7 @@ This connects directly to [[kalai2024hallucinate]]: if a calibrated model is str
 - **The LLM-modulo framework** ([[matarazzo2025survey]] §4.4.5, drawing on Kambhampati et al.): vanilla LLMs solve only 28–59% of Blocksworld planning problems; under back-prompting from VAL (a deterministic plan validator) Blocksworld reaches **82% in 15 iterations**, Logistics 70%, and travel planning improves 6× over baseline. The pattern: *LLM as System 1 idea generator + deterministic verifier as System 2*. This is the deterministic-tools hypothesis operationalised in the planning domain.
 - **TruthfulQA's WebGPT result** ([[lin2022truthfulqa]] Appendix B.3): retrieval-augmented browsing pushes truthfulness from ~21% (GPT-3 default) to ~75%, a larger lift than any scaling intervention on the same benchmark. The browser is functioning as a partially-deterministic verifier (the page either says what the agent claims or it doesn't).
 - **Anthropic's tool-evaluation loop** ([[aizawa2025tools]]): the central design framing is *"tools are a new kind of software which reflects a contract between deterministic systems and non-deterministic agents."* The hypothesis is operationalised in production agent design.
+- **The chess basic-mate boundary** ([[experiment-chess]], 2026-06-20; see [[decisions/2026-06-20-defer-minor-piece-mates]]): a refinement observed at the *skill* layer rather than the engine-during-play layer. A fair *mechanics* tool — a deterministic geometric potential ("shrink this confinement box / region") that states facts without naming the move — lets even the weak base model (internal Elo ~700–800) convert K+R, K+Q, K+2R and all over-material mates. But it provably **cannot** be built for the two minimal minor-piece mates (K+2B, K+B+N): region-, corner-, and king-march-dominant potentials all fail to mate under depth-4 search against optimal defense, and a tool computing the exact Delétang/W-manoeuvre move would be a banned engine. So K+B+N marks the threshold where a fair tool stops substituting for capability and only a full engine (Config 3) or genuine model skill suffices — the hypothesis's boundary made concrete at the sub-task level.
 
 ## Design implication
 
