@@ -988,3 +988,7 @@ Gemma 4's internal thought channel (`<|channel>thought<channel|>`) does not reli
 - Q-up 1-0 (71p), R-up 1-0 (39p), RK-pawns 1-0 (Rh7# 31p) — all converted; exch-up ½–½ FAIL (threw away +2, ended bare king, saved by a Maia stalemate).
 - Recorded the confine-with-pawns fix (_radar.py single-major drill now fires vs king+pawns, not just bare king; + promotion-threat note + pawn caveat) that rescued R-up's grind; 315 tests pass.
 - Boundary: agent converts extra-material-then-simplify (Q/R/R+K+pawns) but not a subtler positional edge (the exchange) — simplification-direction judgement is the missing competence; links to the next-cycle promotion backlog.
+
+## [2026-06-20] decision | 2026-06-20-blunder-gate-advisory-only | Blunder gate is advisory-only (no non-overridable hard class)
+- Created decisions/2026-06-20-blunder-gate-advisory-only.md (supersedes the hard-class aspect of 2026-06-12-blunder-gate-and-memory-channels).
+- A hard gate that refuses a legal move is the tool making the decision (unfair, inflates measured skill) and deadlocked the agent in an in-check position where every legal move dropped the rook into K+B-vs-K. The gate now warns (strong wording for severe cases) but is always overridable with confirm=true.
